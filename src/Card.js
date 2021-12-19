@@ -6,8 +6,8 @@ import {
   Stack
 } from "@chakra-ui/react";
 
-function Card({name, branch, status}) {
-
+function InstanceCard({name, branch, status}) {
+    console.log(name, branch, status)
   return (
     <Box
       p={4}
@@ -24,7 +24,7 @@ function Card({name, branch, status}) {
         ml={{ md: 6 }}
       >
         <Text>{name}</Text>
-        <Text>branch: {branch}</Text>
+        {branch?<Text>branch: {branch}</Text>:null}
         {status === 'running' ? <Button colorScheme='teal' variant='outline'>Editar</Button>:null}
         {status === 'running' ? <Button colorScheme='red'>Parar</Button> : <Button colorScheme='teal'>Levantar</Button>}
       </Stack>
@@ -57,7 +57,7 @@ function RepoCard({repo, instances}){
                 &hellip;
                 </Button>
                 {more ? 
-                    instances.map(({name, description, branch, status}) => <Card 
+                    instances.map(({name, description, branch, status}) => <InstanceCard 
                         key={name} 
                         name={name} 
                         description={description} 
@@ -73,4 +73,17 @@ function RepoCard({repo, instances}){
     )
 }
 
-export default RepoCard;
+function Card({repo, instances}){
+    const {name, description, branch, status} = instances[0];
+    if(instances.length === 1) return <InstanceCard 
+        key={name} 
+        name={name} 
+        description={description} 
+        branch={branch} 
+        status={status} 
+    />
+    return <RepoCard repo={repo} instances={instances}/>
+
+}
+
+export default Card;
