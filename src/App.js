@@ -3,34 +3,10 @@ import './App.css';
 import Card from './Card';
 import { ChakraProvider, SimpleGrid, Container } from "@chakra-ui/react";
 
-/*
-const data = [{
-  name: 'wipi',
-  description: '......', // from file description.txt for example
-  is_repo: true,
-  url_repo: '...',
-  branch: 'dev',
-  has_container: true,
-  container_status: 'running'
-}];
-
-const cocinado = [{
-  repo: '...',
-  //url_repo: '...',
-  instances: [{
-    name: 'wipi',
-    description: '......',
-    branch: 'dev',
-    status: 'running'
-  }]
-}];
-*/
-
 const dataList = [
   {
     id: "1",
     repo: 'icarus.py',
-    //url_repo: '...',
     instances: [{
       name: 'wipi',
       description: 'Un backend para el proyecto icarus',
@@ -41,6 +17,16 @@ const dataList = [
       description: 'Un backend para el proyecto icarus',
       branch: 'feature 1',
       status: 'stopped'
+    }]
+  },
+  {
+    id: "2",
+    repo: null,
+    instances: [{
+      name: 'una demo con python',
+      description: 'una demo para probar como invertir un diccionario',
+      branch: null,
+      status: 'running'
     }]
   }
 ];

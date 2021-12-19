@@ -6,15 +6,16 @@ import {
   Stack
 } from "@chakra-ui/react";
 
-function Card({name, description, branch, status}) {
+function Card({name, branch, status}) {
 
   return (
     <Box
       p={4}
       display={{ md: "flex" }}
       maxWidth="32rem"
-      borderWidth={1}
+      borderWidth={status==="running"?4:1}
       margin={2}
+      borderColor={status==="running"?"teal":"gray"}
     >
       <Stack
         align={{ base: "center", md: "stretch" }}
@@ -24,9 +25,6 @@ function Card({name, description, branch, status}) {
       >
         <Text>{name}</Text>
         <Text>branch: {branch}</Text>
-        <Text my={2} color="gray.500">
-          {description}
-        </Text>        
         {status === 'running' ? <Button colorScheme='teal' variant='outline'>Editar</Button>:null}
         {status === 'running' ? <Button colorScheme='red'>Parar</Button> : <Button colorScheme='teal'>Levantar</Button>}
       </Stack>
@@ -52,6 +50,9 @@ function RepoCard({repo, instances}){
                 ml={{ md: 6 }}
             >    
                 <div>{repo}</div>
+                <Text my={2} color="gray.500">
+                    {instances[0].description}
+                </Text>        
                 <Button maxWidth="100px" my={2} onClick={()=>setMore(!more)} >
                 &hellip;
                 </Button>
