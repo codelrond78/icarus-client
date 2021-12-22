@@ -1,28 +1,36 @@
 import './App.css';
-import { ChakraProvider, Container, Button } from "@chakra-ui/react";
+import { ChakraProvider, Container } from "@chakra-ui/react";
 import Terminal from './Terminal';
-import { LineType } from 'react-terminal-ui';
-import { useState } from 'react';
+import PouchDB from 'pouchdb-browser';
+import { Provider } from 'use-pouchdb';
 
-const lines = [
-  {type: LineType.Output, value: 'Welcome to the React Terminal UI Demo!'},
-  {type: LineType.Input, value: 'Some previous input received'},
-];
+const db = new PouchDB('local')
+const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log')
 
-function App() {
-  const [lineData, setLineData] = useState(lines);
+db.sync(remoteLog, {
+  live: true
+}).on('change', function (change) {
+  console.log(change)
+}).on('error', function (err) {
+  console.log('err en log:', err)
+});
+
+//const sync = 
+/*db.sync(remoteLog, {
+  retry: true,
+  live: true,
+})*/
+
+
+function App() {  
   return (
-    <ChakraProvider>
-      <Container maxW="80rem" centerContent>
-        <Terminal terminalLineData={lineData} />
-        <Button onClick={()=>setLineData(
-            [...lineData, 
-              {type: LineType.Input, 
-              value: 'Otra línea'
-              }
-            ])}>Otra línea</Button>
-      </Container>
-    </ChakraProvider>
+    <Provider pouchdb={db}>
+      <ChakraProvider>
+        <Container maxW="80rem" centerContent>
+          <Terminal />
+        </Container>
+      </ChakraProvider>
+    </Provider>
   );
 }
 
