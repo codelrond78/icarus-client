@@ -12,6 +12,7 @@ function terminalLineData(docs){
 const TerminalController = () => {
   const { rows: lines } = useAllDocs({
     include_docs: true, 
+    descending: true
   })
     
   return (
