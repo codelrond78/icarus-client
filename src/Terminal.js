@@ -4,7 +4,9 @@ import { useAllDocs } from 'use-pouchdb';
 import { LineType } from 'react-terminal-ui';
 
 function terminalLineData(docs){
-    return docs.map(doc => ({type: LineType.Input, value: doc.doc.line}))
+    return docs.map(doc => ({
+        type: doc.doc.line.type === 'input' ? LineType.Input: LineType.Output, value: doc.doc.line.text
+    }))
 }
 
 const TerminalController = () => {
