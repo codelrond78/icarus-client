@@ -5,8 +5,8 @@ import PouchDB from 'pouchdb-browser';
 import { Provider } from 'use-pouchdb';
 import StopButton from './components/StopButton';
 import RunButton from './components/RunButton';
-import { HStack, VStack } from '@chakra-ui/react'
-import Highlight from 'react-highlight'
+import { HStack, VStack } from '@chakra-ui/react';
+import ManageYaml from './components/ManageYaml';
 
 const db = new PouchDB('local')
 const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log')
@@ -42,9 +42,7 @@ function App() {
               </HStack>
               <Terminal />          
             </VStack>
-            <Highlight className='yaml'>
-              {yamlText}
-            </Highlight>
+            <ManageYaml workspace="abc" yamlText={yamlText} />
           </HStack>
         </Container>
       </ChakraProvider>
