@@ -19,17 +19,28 @@ async function fork(workspace, forkedName){
     //await axios.post('/api/workspace/' + workspace + '/fork/' + forkedName);
 }
 
-const EditButton = ({toggleEdit}) => {
-    return <Button  colorScheme='teal' variant='outline' onClick={toggleEdit}>Edit</Button>
+const EditButton = ({onClick}) => {
+    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Edit</Button>
 }
 
-const ForkButton = ({workspace, forkedName}) => {
-    return <Button  colorScheme='teal' variant='outline' onClick={()=>fork(workspace, forkedName)}>Stop</Button>
+const CancelEditButton = ({onClick}) => {
+    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Cancel</Button>
 }
 
-const CreateButton = ({workspace, toggleEdit, yaml}) => {
-    toggleEdit();
-    return <Button  colorScheme='teal' variant='outline' onClick={()=>create(workspace, yaml)}>Create</Button>
+const ForkButton = ({workspace, forkedName, toggleEdit}) => {
+    function onClick(){
+        toggleEdit();
+        fork(workspace, forkedName);
+    }
+    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Stop</Button>
+}
+
+const CreateButton = ({workspace, yaml, toggleEdit}) => {
+    function onClick(){
+        toggleEdit();
+        create(workspace, yaml);
+    }
+    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Create</Button>
 }
 
 const SaveButton = ({workspace, toggleEdit, yaml}) => {
@@ -49,17 +60,20 @@ const ManageYaml = ({workspace=null, yamlText=''}) => {
             {edit ? 
                 <VStack>
                     <TextArea value={text} onChange={handleYamlChange} />
-                    {
-                        workspace ? 
-                            <SaveButton workspace={workspace} yaml={text} toggleEdit={toggleEdit} /> 
-                            :
-                            <CreateButton workspace="abc" yaml={text} toggleEdit={toggleEdit} />                             
-                    }
+                    <HStack>
+                        {
+                            workspace ? 
+                                <SaveButton workspace={workspace} yaml={text} toggleEdit={toggleEdit} /> 
+                                :
+                                <CreateButton workspace="abc" yaml={text} toggleEdit={toggleEdit} />                             
+                        }
+                        <CancelEditButton onClick={toggleEdit} />
+                    </HStack>
                 </VStack>
                 :
                 <VStack>
                     <HStack>
-                        <EditButton toggleEdit={toggleEdit} />
+                        <EditButton onClick={toggleEdit} />
                         <ForkButton workspace={workspace} forkedName={"xyz"} />                        
                     </HStack>
                     <Highlight className='yaml'>{yamlText}</Highlight>
