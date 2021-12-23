@@ -7,7 +7,11 @@ import { TextArea } from '@chakra-ui/react';
 
 async function create(workspace, yaml){
     console.log('create', workspace, yaml);
-    await axios.post('/api/workspace/' + workspace, yaml);
+    await axios.post('/api/workspace/' + workspace, yaml, {
+        headers: {
+           'Content-Type': 'text/plain'
+        }
+     });
 }
 
 async function save(workspace, yaml){
