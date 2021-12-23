@@ -20,15 +20,6 @@ db.sync(remoteLog, {
   console.log('err en log:', err)
 });
 
-const yamlText = `
-version: "3.9"  # optional since v1.27.0
-services:
-  db:
-    image: mongo
-    ports: ["27017"]
-
-`
-
 function App() {  
   return (
     <Provider pouchdb={db}>
@@ -42,7 +33,7 @@ function App() {
               </HStack>
               <Terminal />          
             </VStack>
-            <ManageYaml workspace="abc" yamlText={yamlText} />
+            <ManageYaml workspace="abc" />
           </HStack>
         </Container>
       </ChakraProvider>

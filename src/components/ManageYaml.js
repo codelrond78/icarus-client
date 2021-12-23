@@ -3,7 +3,11 @@ import { Button } from "@chakra-ui/react";
 import axios from 'axios';
 import { HStack, VStack } from '@chakra-ui/react';
 import Highlight from 'react-highlight';
-import { TextArea } from '@chakra-ui/react';
+import { Textarea } from '@chakra-ui/react';
+import {
+    useRecoilState, useRecoilValue,
+} from 'recoil';
+import {currentWorkspaceYaml, currentWorkspaceName} from '../store';
 
 async function create(workspace, yaml){
     console.log('create', workspace, yaml);
@@ -52,24 +56,27 @@ const SaveButton = ({workspace, toggleEdit, yaml}) => {
     return <Button  colorScheme='teal' variant='outline' onClick={()=>save(workspace, yaml)}>Save</Button>
 }
 
-const ManageYaml = ({workspace=null, yamlText=''}) => {    
-    const [edit, setEdit] = useState(false);
-    const [text, setText] = useState(yamlText);
+//const ClearButton
 
-    const handleYamlChange = (event) => setText(event.target.value);
+const ManageYaml = () => {    
+    const [edit, setEdit] = useState(false);
+    const [yamlText, setYamlText] = useRecoilState(currentWorkspaceYaml);
+    const workspace = useRecoilValue(currentWorkspaceName);
+
+    const handleYamlChange = (event) => setYamlText(event.target.value);
     const toggleEdit = () => setEdit(!edit);
 
     return (
         <VStack>
             {edit ? 
                 <VStack>
-                    <TextArea value={text} onChange={handleYamlChange} />
+                    <Textarea value={yamlText} onChange={handleYamlChange} />
                     <HStack>
                         {
                             workspace ? 
-                                <SaveButton workspace={workspace} yaml={text} toggleEdit={toggleEdit} /> 
+                                <SaveButton workspace={workspace} yaml={yamlText} toggleEdit={toggleEdit} /> 
                                 :
-                                <CreateButton workspace="abc" yaml={text} toggleEdit={toggleEdit} />                             
+                                <CreateButton workspace="abc" yaml={yamlText} toggleEdit={toggleEdit} />                             
                         }
                         <CancelEditButton onClick={toggleEdit} />
                     </HStack>

@@ -1,12 +1,22 @@
-import {
-    RecoilRoot,
-    atom,
-    selector,
-    useRecoilState,
-    useRecoilValue,
+import {    
+    atom
   } from 'recoil';
 
-export const textState = atom({
-    key: 'textState', // unique ID (with respect to other atoms/selectors)
-    default: '', // default value (aka initial value)
+const yamlText = `
+version: "3.9"  # optional since v1.27.0
+services:
+  db:
+    image: mongo
+    ports: ["27017"]
+
+`
+
+export const currentWorkspaceYaml = atom({
+    key: 'currentWorkspaceYaml', 
+    default: yamlText, 
+});
+
+export const currentWorkspaceName = atom({
+  key: 'currentWorkspaceName', 
+  default: "abc", 
 });
