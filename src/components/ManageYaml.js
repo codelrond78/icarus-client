@@ -57,13 +57,18 @@ const SaveButton = ({workspace, toggleEdit, yaml}) => {
 }
 
 //const ClearButton
+//const ValidateButton
 
 const ManageYaml = () => {    
+    const [isValid, setValid] = useState(true);
     const [edit, setEdit] = useState(false);
     const [yamlText, setYamlText] = useRecoilState(currentWorkspaceYaml);
     const workspace = useRecoilValue(currentWorkspaceName);
 
-    const handleYamlChange = (event) => setYamlText(event.target.value);
+    const handleYamlChange = (event) => {
+        setValid(false);
+        setYamlText(event.target.value);
+    }
     const toggleEdit = () => setEdit(!edit);
 
     return (
@@ -72,11 +77,12 @@ const ManageYaml = () => {
                 <VStack>
                     <Textarea value={yamlText} onChange={handleYamlChange} />
                     <HStack>
-                        {
-                            workspace ? 
+                        {   !isValid ? (<Button>Validate</Button>) :
+                            (workspace ? 
                                 <SaveButton workspace={workspace} yaml={yamlText} toggleEdit={toggleEdit} /> 
                                 :
-                                <CreateButton workspace="abc" yaml={yamlText} toggleEdit={toggleEdit} />                             
+                                <CreateButton workspace="abc" yaml={yamlText} toggleEdit={toggleEdit} />
+                            )
                         }
                         <CancelEditButton onClick={toggleEdit} />
                     </HStack>
