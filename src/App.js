@@ -9,21 +9,39 @@ import { HStack, VStack } from '@chakra-ui/react';
 import ManageYaml from './components/ManageYaml';
 import WorkspaceCard from './components/WorkspaceCard';
 
-const db = new PouchDB('local')
+const localLog = new PouchDB('localLog')
 const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log')
 
-db.sync(remoteLog, {
+localLog.sync(remoteLog, {
   live: true,
-  //retry: true,
+  retry: true,
 }).on('change', function (change) {
   console.log(change)
 }).on('error', function (err) {
   console.log('err en log:', err)
 });
 
+const localWorkspaces = new PouchDB('localWorkspaces')
+const remoteWorkspaces = new PouchDB('http://admin:123@localhost:5984/workspaces')
+
+localWorkspaces.sync(remoteWorkspaces, {
+  live: true,
+  retry: true,
+}).on('change', function (change) {
+  console.log(change)
+}).on('error', function (err) {
+  console.log('err en log:', err)
+});
+
+
 function App() {  
   return (
-    <Provider pouchdb={db}>
+    <Provider default="localLog"
+      databases={{
+        localLog,
+        localWorkspaces,
+      }}
+    >
       <ChakraProvider>
         <Container maxW="80rem" centerContent>
           <HStack>
