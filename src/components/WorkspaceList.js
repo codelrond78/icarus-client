@@ -14,7 +14,7 @@ const WorkspaceList = () => {
     return (
         <Box>
             <VStack>
-                {workspaces.map(w => <WorkspaceCard description={w.description} containers={w.containers} />)}
+                {workspaces.map(w => <WorkspaceCard workspace={w} />)}
             </VStack>
         </Box>
     )

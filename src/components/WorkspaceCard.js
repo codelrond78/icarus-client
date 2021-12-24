@@ -5,7 +5,7 @@ import {
   Link,
   Stack
 } from "@chakra-ui/react";
-
+import StopButton from "./StopButton";
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 function Port({port}){
@@ -24,13 +24,13 @@ function Container({container}){
         borderColor="gray"
     >
         <div>{name}: {status}</div>
-        {ports.map(port => <Port port={port} />)}
+        {ports.map(port => <Port port={port} />)}        
     </Box>
     )
 }
 
-function Card({description, containers}) {
-
+function Card({workspace}) {
+  const {name, description, containers} = workspace.doc;
   const isRunning = containers.map(c => c.status).every(s => s === 'running');
   const isStopped = containers.map(c => c.status).every(s => s === 'stopped');
 
@@ -58,6 +58,7 @@ function Card({description, containers}) {
         ml={{ md: 6 }}
       >
         <Text>{description}</Text>
+        <StopButton workspace={name} />
         {containers.map(container => <Container container={container} />)}
       </Stack>
     </Box>
