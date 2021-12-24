@@ -29,8 +29,8 @@ function Container({container}){
     )
 }
 
-function Card({workspace}) {
-  const {name, description, containers} = workspace.doc;
+function Card({workspace:  {name, description, containers}}) {
+  
   const isRunning = containers.map(c => c.status).every(s => s === 'running');
   const isStopped = containers.map(c => c.status).every(s => s === 'stopped');
 
