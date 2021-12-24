@@ -7,7 +7,7 @@ import StopButton from './components/StopButton';
 import RunButton from './components/RunButton';
 import { HStack, VStack } from '@chakra-ui/react';
 import ManageYaml from './components/ManageYaml';
-import WorkspaceCard from './components/WorkspaceCard';
+import WorkspaceList from './components/WorkspaceList';
 
 const localLog = new PouchDB('localLog')
 const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log')
@@ -27,6 +27,7 @@ const remoteWorkspaces = new PouchDB('http://admin:123@localhost:5984/workspaces
 localWorkspaces.sync(remoteWorkspaces, {
   live: true,
   retry: true,
+  filter: 'testing/all_workspaces',
 }).on('change', function (change) {
   console.log(change)
 }).on('error', function (err) {
@@ -45,7 +46,7 @@ function App() {
       <ChakraProvider>
         <Container maxW="80rem" centerContent>
           <HStack>
-            <WorkspaceCard description="una prueba de card" containers={[{name: 'c_1', status: 'running', ports: ["8080"]}]}/>
+            <WorkspaceList />
             <VStack>
               <HStack>
                 <RunButton workspace="abc"/>
