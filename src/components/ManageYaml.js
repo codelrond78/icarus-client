@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import axios from 'axios';
 import { HStack, VStack } from '@chakra-ui/react';
 import Highlight from 'react-highlight';
 import { Textarea } from '@chakra-ui/react';
-import {
-    useRecoilState, useRecoilValue,
-} from 'recoil';
-import {currentWorkspaceYaml, currentWorkspaceName} from '../store';
+import { useDoc } from 'use-pouchdb';
+import { useRecoilValue } from 'recoil';
+import { currentWorkspaceName} from '../store';
 
 async function create(workspace, yaml){
     console.log('create', workspace, yaml);
@@ -60,11 +59,17 @@ const SaveButton = ({workspace, toggleEdit, yaml}) => {
 //const ValidateButton
 
 const ManageYaml = () => {    
+    const workspace = useRecoilValue(currentWorkspaceName);
+    const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'}, {yaml: ""});
+    console.log(loading, state, error)
     const [isValid, setValid] = useState(true);
     const [edit, setEdit] = useState(false);
-    const [yamlText, setYamlText] = useRecoilState(currentWorkspaceYaml);
-    const workspace = useRecoilValue(currentWorkspaceName);
+    const [yamlText, setYamlText] = useState(doc.yaml);
 
+    useEffect(() => {
+        setYamlText(doc.yaml);
+    }, [workspace, doc.yaml]); 
+    
     const handleYamlChange = (event) => {
         setValid(false);
         setYamlText(event.target.value);
