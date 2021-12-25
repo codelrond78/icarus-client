@@ -11,7 +11,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 function Port({port}){
     return (
         <Link href={'http://localhost:' + port} isExternal>
-            Open port <ExternalLinkIcon mx='2px' />
+            Open port {port} <ExternalLinkIcon mx='2px' />
         </Link>
     )
 }
@@ -24,13 +24,13 @@ function Container({container}){
         borderColor="gray"
     >
         <div>{name}: {status}</div>
-        {ports.map(port => <Port port={port} />)}        
+        {ports.map(port => <Port key={port} port={port} />)}        
     </Box>
     )
 }
 
-function Card({workspace:  {name, description, containers}}) {
-  
+function Card({workspace:  {id, description, containers}}) {
+  console.log(id, description, containers);
   const isRunning = containers.map(c => c.status).every(s => s === 'running');
   const isStopped = containers.map(c => c.status).every(s => s === 'stopped');
 
@@ -58,8 +58,8 @@ function Card({workspace:  {name, description, containers}}) {
         ml={{ md: 6 }}
       >
         <Text>{description}</Text>
-        <StopButton workspace={name} />
-        {containers.map(container => <Container container={container} />)}
+        <StopButton workspace={id} />
+        {containers.map(container => <Container key={container.name} container={container} />)}
       </Stack>
     </Box>
   );

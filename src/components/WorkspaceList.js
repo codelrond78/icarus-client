@@ -11,10 +11,16 @@ const WorkspaceList = () => {
         include_docs: true, 
         descending: true
       })
+    //console.log(workspaces);
+    let myWorkspaces = workspaces.filter(w =>w.doc.type === 'workspace').map(w => (
+            {id: w.id, description: w.doc.description, containers: w.doc.containers}
+        )
+    )
+    console.log(myWorkspaces);
     return (
         <Box>
             <VStack>
-                {workspaces.map(w => <WorkspaceCard workspace={w.doc} />)}
+                {myWorkspaces.map(w => <WorkspaceCard key={w.id} workspace={w} />)}
             </VStack>
         </Box>
     )

@@ -9,8 +9,8 @@ import { HStack, VStack } from '@chakra-ui/react';
 import ManageYaml from './components/ManageYaml';
 import WorkspaceList from './components/WorkspaceList';
 
-const localLog = new PouchDB('localLog')
-const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log')
+const localLog = new PouchDB('localLog');
+const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log');
 
 localLog.sync(remoteLog, {
   live: true,
@@ -27,7 +27,7 @@ const remoteWorkspaces = new PouchDB('http://admin:123@localhost:5984/workspaces
 localWorkspaces.sync(remoteWorkspaces, {
   live: true,
   retry: true,
-  filter: 'testing/all_workspaces',
+  filter: 'example/myWorkspaces',
 }).on('change', function (change) {
   console.log(change)
 }).on('error', function (err) {
@@ -47,7 +47,7 @@ function App() {
         <Container maxW="80rem" centerContent>
           <HStack>
             <WorkspaceList />
-            <VStack>
+            {/*<VStack>
               <HStack>
                 <RunButton workspace="abc"/>
                 <StopButton workspace="abc"/>
@@ -55,6 +55,7 @@ function App() {
               <Terminal />          
             </VStack>
             <ManageYaml workspace="abc" />
+            */}
           </HStack>
         </Container>
       </ChakraProvider>
