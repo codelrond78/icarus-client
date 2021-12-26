@@ -6,10 +6,16 @@ import Highlight from 'react-highlight';
 import { Textarea } from '@chakra-ui/react';
 import { useDoc } from 'use-pouchdb';
 import { useRecoilValue } from 'recoil';
-import { currentWorkspaceName} from '../store';
+import { activeWorkspaceName} from '../store';
 import yaml from 'js-yaml';
+import generateRandomAnimalName from 'random-animal-name-generator';
+  
+function getNameWorkspace(){
+    return generateRandomAnimalName().split(' ')[1];
+}
 
-async function create(workspace, yaml){
+async function create(yaml){
+    const workspace = getNameWorkspace();
     const url = `/api/workspace/${workspace}`;
     console.log('POST', url, yaml);
     await axios.post(url, yaml, {
@@ -23,8 +29,10 @@ async function save(workspace, yaml){
     console.log('save', workspace, yaml);
 }
 
-async function fork(workspace, forkedName){
-    console.log('fork', workspace, forkedName);
+async function fork(workspace){
+    const forkedName = getNameWorkspace();
+    const url = `/api/workspace/${workspace}/fork/${forkedName}`;
+    console.log('POST', url);
     //await axios.post('/api/workspace/' + workspace + '/fork/' + forkedName);
 }
 
@@ -36,18 +44,18 @@ const CancelEditButton = ({onClick}) => {
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Cancel</Button>
 }
 
-const ForkButton = ({workspace, forkedName, toggleEdit}) => {
+const ForkButton = ({workspace, toggleEdit}) => {
     function onClick(){
         toggleEdit();
-        fork(workspace, forkedName);
+        fork(workspace);
     }
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Fork</Button>
 }
 
-const CreateButton = ({workspace, yaml, toggleEdit}) => {
+const CreateButton = ({yaml, toggleEdit}) => {
     function onClick(){
         toggleEdit();
-        create(workspace, yaml);
+        create(yaml);
     }
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Create</Button>
 }
@@ -61,7 +69,7 @@ const SaveButton = ({workspace, toggleEdit, yaml}) => {
 //const ValidateButton
 
 const ManageYaml = () => {    
-    const workspace = useRecoilValue(currentWorkspaceName);
+    const workspace = useRecoilValue(activeWorkspaceName);
     const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'});
     console.log(loading, state, error)
     const [isValid, setValid] = useState(true);
@@ -90,7 +98,7 @@ const ManageYaml = () => {
                             (workspace ? 
                                 <SaveButton workspace={workspace} yaml={yamlText} toggleEdit={toggleEdit} /> 
                                 :
-                                <CreateButton workspace="abc" yaml={yamlText} toggleEdit={toggleEdit} />
+                                <CreateButton yaml={yamlText} toggleEdit={toggleEdit} />
                             )
                         }
                         <CancelEditButton onClick={toggleEdit} />
@@ -100,7 +108,7 @@ const ManageYaml = () => {
                 <VStack>
                     <HStack>
                         <EditButton onClick={toggleEdit} />
-                        <ForkButton workspace={workspace} forkedName={"xyz"} />                        
+                        <ForkButton workspace={workspace} />                        
                     </HStack>
                     <Highlight className='yaml'>{yamlText}</Highlight>
                 </VStack>                
