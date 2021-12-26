@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  List,
+  ListItem,
   Box, VStack
 } from "@chakra-ui/react";
 import WorkspaceCard from './WorkspaceCard';
@@ -20,7 +22,13 @@ const WorkspaceList = () => {
     return (
         <Box>
             <VStack>
-                {myWorkspaces.map(w => <WorkspaceCard key={w.id} workspace={w} />)}
+                <List spacing={3}>
+                    {myWorkspaces.map(w => 
+                        <ListItem key={w.id}>
+                            <WorkspaceCard workspace={w} />
+                        </ListItem>
+                    )}
+                </List>
             </VStack>
         </Box>
     )

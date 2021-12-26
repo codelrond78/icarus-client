@@ -3,9 +3,13 @@ import {
   Box,
   Text,
   Link,
-  Stack
+  Stack,
+  HStack,
+  List,
+  ListItem
 } from "@chakra-ui/react";
 import StopButton from "./StopButton";
+import RunButton from "./RunButton";
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 function Port({port}){
@@ -24,32 +28,27 @@ function Container({container}){
         borderColor="gray"
     >
         <div>{name}: {status}</div>
-        {ports.map(port => <Port key={port} port={port} />)}        
+        <List>
+          {ports.map(port => 
+            <ListItem key={port}>
+              <Port port={port} />
+            </ListItem>
+          )}        
+        </List>
     </Box>
     )
 }
 
 function Card({workspace:  {id, description, containers}}) {
-  console.log(id, description, containers);
-  const isRunning = containers.map(c => c.status).every(s => s === 'running');
-  const isStopped = containers.map(c => c.status).every(s => s === 'stopped');
-
-  let status = '-';
-
-  if(isRunning){
-      status = 'running';
-  }else if(isStopped){
-      status = 'stopped';
-  }
-
+  
   return (
     <Box
       p={4}
       display={{ md: "flex" }}
       maxWidth="32rem"
-      borderWidth={status==="running"?4:1}
+      borderWidth={4}
       margin={2}
-      borderColor={status==="running"?"teal":(status==='stopped'?'gray':'yellow')}
+      borderColor={'gray'}
     >
       <Stack
         align={{ base: "center", md: "stretch" }}
@@ -58,8 +57,17 @@ function Card({workspace:  {id, description, containers}}) {
         ml={{ md: 6 }}
       >
         <Text>{description}</Text>
-        <StopButton workspace={id} />
-        {containers.map(container => <Container key={container.name} container={container} />)}
+        <HStack>
+          <RunButton workspace={id} />
+          <StopButton workspace={id} />
+        </HStack>
+        <List>
+          {containers.map(container => 
+            <ListItem key={container.name}>
+              <Container container={container} />
+            </ListItem>
+          )}
+        </List>
       </Stack>
     </Box>
   );

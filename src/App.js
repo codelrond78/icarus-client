@@ -3,8 +3,6 @@ import { ChakraProvider, Container } from "@chakra-ui/react";
 import Terminal from './Terminal';
 import PouchDB from 'pouchdb-browser';
 import { Provider } from 'use-pouchdb';
-import StopButton from './components/StopButton';
-import RunButton from './components/RunButton';
 import { HStack, VStack } from '@chakra-ui/react';
 import ManageYaml from './components/ManageYaml';
 import WorkspaceList from './components/WorkspaceList';
@@ -48,13 +46,13 @@ function App() {
           <HStack>
             <WorkspaceList />
             {/*<VStack>
+              <ManageYaml workspace="abc" />
               <HStack>
                 <RunButton workspace="abc"/>
                 <StopButton workspace="abc"/>
               </HStack>
               <Terminal />          
-            </VStack>
-            <ManageYaml workspace="abc" />
+            </VStack>            
             */}
           </HStack>
         </Container>

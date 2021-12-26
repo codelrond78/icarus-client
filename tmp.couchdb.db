@@ -1,0 +1,45 @@
+{
+  "_id": "6b14d7c77019427cba43a5b1c44c0424",
+  "_rev": "1-5996d05c5f43ecc7f2085abbd8ee3bac",
+  "line": {
+    "type": "input",
+    "text": "docker-compose -f /workspaces/abc/docker-compose.yaml stop"
+  },
+  "time": 1640264633.6601388
+}
+
+{
+  "_id": "_design/example",
+  "_rev": "1-89fc53183957fa835df5578c8761dcce",
+  "filters": {
+    "myWorkspaces": "function(doc, req){ if(doc.type === 'workspace'){return true}else{ return false}}"
+  }
+}
+
+{
+  "_id": "gorilla",
+  "_rev": "2-1cd52eeb21a9e2db04f876f87e539354",
+  "description": "un gorila amarillo",
+  "type": "workspace",
+  "specification": {
+    "version": "3"
+  },
+  "containers": [
+    {
+      "name": "gorilla_c1",
+      "status": "running",
+      "ports": [
+        "3000",
+        "8080"
+      ]
+    },
+    {
+      "name": "gorilla_c2",
+      "status": "stopped",
+      "ports": [
+        "9000"
+      ]
+    }
+  ]
+}
+
