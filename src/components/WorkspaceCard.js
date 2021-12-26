@@ -12,6 +12,8 @@ import {
 import StopButton from "./StopButton";
 import RunButton from "./RunButton";
 import { ExternalLinkIcon, ViewIcon } from '@chakra-ui/icons';
+import { useRecoilState } from "recoil";
+import { activeWorkspaceName } from '../store';
 
 function Port({port}){
     return (
@@ -41,10 +43,7 @@ function Container({container}){
 }
 
 function Card({workspace:  {id, description, containers}}) {
-  
-  function setActiveWorkspace(id){
-    console.log('set active workspace', id);
-  }
+  const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
 
   return (
     <Box
@@ -61,7 +60,7 @@ function Card({workspace:  {id, description, containers}}) {
         mt={{ base: 4, md: 0 }}
         ml={{ md: 6 }}
       >
-        <Link onClick={setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
+        <Link onClick={()=>setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />
