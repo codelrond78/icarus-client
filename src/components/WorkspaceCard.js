@@ -6,11 +6,12 @@ import {
   Stack,
   HStack,
   List,
-  ListItem
+  ListItem,
+  ListIcon
 } from "@chakra-ui/react";
 import StopButton from "./StopButton";
 import RunButton from "./RunButton";
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { ExternalLinkIcon, ViewIcon } from '@chakra-ui/icons';
 
 function Port({port}){
     return (
@@ -56,7 +57,7 @@ function Card({workspace:  {id, description, containers}}) {
         mt={{ base: 4, md: 0 }}
         ml={{ md: 6 }}
       >
-        <Text>{description}</Text>
+        <Link><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />
