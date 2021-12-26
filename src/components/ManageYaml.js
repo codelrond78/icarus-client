@@ -72,7 +72,7 @@ const ManageYaml = () => {
         if(doc){
             setYamlText(yaml.dump(doc.specification));
         }        
-    }, [workspace, doc.specification]); 
+    }, [workspace, doc]); 
     
     const handleYamlChange = (event) => {
         setValid(false);
