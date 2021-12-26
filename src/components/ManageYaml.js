@@ -41,7 +41,7 @@ const ForkButton = ({workspace, forkedName, toggleEdit}) => {
         toggleEdit();
         fork(workspace, forkedName);
     }
-    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Stop</Button>
+    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Fork</Button>
 }
 
 const CreateButton = ({workspace, yaml, toggleEdit}) => {
@@ -66,7 +66,7 @@ const ManageYaml = () => {
     console.log(loading, state, error)
     const [isValid, setValid] = useState(true);
     const [edit, setEdit] = useState(false);
-    const [yamlText, setYamlText] = useState("yaml inicial");
+    const [yamlText, setYamlText] = useState('"version": "3"');
 
     useEffect(() => {
         if(doc){

@@ -42,6 +42,10 @@ function Container({container}){
 
 function Card({workspace:  {id, description, containers}}) {
   
+  function setActiveWorkspace(id){
+    console.log('set active workspace', id);
+  }
+
   return (
     <Box
       p={4}
@@ -57,7 +61,7 @@ function Card({workspace:  {id, description, containers}}) {
         mt={{ base: 4, md: 0 }}
         ml={{ md: 6 }}
       >
-        <Link><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
+        <Link onClick={setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />

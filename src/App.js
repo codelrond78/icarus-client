@@ -6,6 +6,7 @@ import { Provider } from 'use-pouchdb';
 import { HStack, VStack } from '@chakra-ui/react';
 import ManageYaml from './components/ManageYaml';
 import WorkspaceList from './components/WorkspaceList';
+import {RecoilRoot} from 'recoil';
 
 const localLog = new PouchDB('localLog');
 const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log');
@@ -42,15 +43,17 @@ function App() {
       }}
     >
       <ChakraProvider>
-        <Container maxW="80rem" centerContent>
-          <HStack>
-            <WorkspaceList />
-            <VStack>
-              <ManageYaml workspace="gorilla" />
-              <Terminal />          
-            </VStack>            
-          </HStack>
-        </Container>
+        <RecoilRoot>
+          <Container maxW="80rem" centerContent>
+            <HStack>
+              <WorkspaceList />
+              <VStack style={ {maxWidth: '500px'} }>
+                <ManageYaml workspace="gorilla" />
+                <Terminal />          
+              </VStack>            
+            </HStack>
+          </Container>
+        </RecoilRoot>
       </ChakraProvider>
     </Provider>
   );
