@@ -5,7 +5,7 @@ import { HStack, VStack } from '@chakra-ui/react';
 import Highlight from 'react-highlight';
 import { Textarea } from '@chakra-ui/react';
 import { useDoc } from 'use-pouchdb';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { activeWorkspaceName} from '../store';
 import yaml from 'js-yaml';
 import generateRandomAnimalName from 'random-animal-name-generator';
@@ -44,10 +44,11 @@ const CancelEditButton = ({onClick}) => {
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Cancel</Button>
 }
 
-const ForkButton = ({workspace, toggleEdit}) => {
+const ForkButton = ({workspace, toggleEdit, setActiveWorkspace}) => {
     function onClick(){
         toggleEdit();
         fork(workspace);
+        setActiveWorkspace(null);
     }
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Fork</Button>
 }
@@ -69,12 +70,12 @@ const SaveButton = ({workspace, toggleEdit, yaml}) => {
 //const ValidateButton
 
 const ManageYaml = () => {    
-    const workspace = useRecoilValue(activeWorkspaceName);
+    const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
     const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'});
     console.log(loading, state, error)
     const [isValid, setValid] = useState(true);
     const [edit, setEdit] = useState(false);
-    const [yamlText, setYamlText] = useState('"version": "3"');
+    const [yamlText, setYamlText] = useState('"version": ";)"');
 
     useEffect(() => {
         if(doc){
@@ -108,7 +109,7 @@ const ManageYaml = () => {
                 <VStack>
                     <HStack>
                         <EditButton onClick={toggleEdit} />
-                        <ForkButton workspace={workspace} />                        
+                        <ForkButton workspace={workspace} toggleEdit={toggleEdit} setActiveWorkspace={setActiveWorkspace} />                        
                     </HStack>
                     <Highlight className='yaml'>{yamlText}</Highlight>
                 </VStack>                

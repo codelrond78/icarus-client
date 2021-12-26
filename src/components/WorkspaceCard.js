@@ -43,6 +43,7 @@ function Container({container}){
 }
 
 function Card({workspace:  {id, description, containers}}) {
+  // eslint-disable-next-line no-unused-vars
   const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
 
   return (
