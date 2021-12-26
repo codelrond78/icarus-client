@@ -7,10 +7,12 @@ import { Textarea } from '@chakra-ui/react';
 import { useDoc } from 'use-pouchdb';
 import { useRecoilValue } from 'recoil';
 import { currentWorkspaceName} from '../store';
+import yaml from 'js-yaml';
 
 async function create(workspace, yaml){
-    console.log('create', workspace, yaml);
-    await axios.post('/api/workspace/' + workspace, yaml, {
+    const url = `/api/workspace/${workspace}`;
+    console.log('POST', url, yaml);
+    await axios.post(url, yaml, {
         headers: {
            'Content-Type': 'text/plain'
         }
@@ -27,11 +29,11 @@ async function fork(workspace, forkedName){
 }
 
 const EditButton = ({onClick}) => {
-    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Edit</Button>
+    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Edit</Button>
 }
 
 const CancelEditButton = ({onClick}) => {
-    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Cancel</Button>
+    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Cancel</Button>
 }
 
 const ForkButton = ({workspace, forkedName, toggleEdit}) => {
@@ -39,7 +41,7 @@ const ForkButton = ({workspace, forkedName, toggleEdit}) => {
         toggleEdit();
         fork(workspace, forkedName);
     }
-    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Stop</Button>
+    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Stop</Button>
 }
 
 const CreateButton = ({workspace, yaml, toggleEdit}) => {
@@ -47,12 +49,12 @@ const CreateButton = ({workspace, yaml, toggleEdit}) => {
         toggleEdit();
         create(workspace, yaml);
     }
-    return <Button  colorScheme='teal' variant='outline' onClick={onClick}>Create</Button>
+    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Create</Button>
 }
 
 const SaveButton = ({workspace, toggleEdit, yaml}) => {
     toggleEdit();
-    return <Button  colorScheme='teal' variant='outline' onClick={()=>save(workspace, yaml)}>Save</Button>
+    return <Button colorScheme='teal' variant='outline' onClick={()=>save(workspace, yaml)}>Save</Button>
 }
 
 //const ClearButton
@@ -60,15 +62,17 @@ const SaveButton = ({workspace, toggleEdit, yaml}) => {
 
 const ManageYaml = () => {    
     const workspace = useRecoilValue(currentWorkspaceName);
-    const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'}, {yaml: ""});
+    const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'});
     console.log(loading, state, error)
     const [isValid, setValid] = useState(true);
     const [edit, setEdit] = useState(false);
-    const [yamlText, setYamlText] = useState(doc.yaml);
+    const [yamlText, setYamlText] = useState("yaml inicial");
 
     useEffect(() => {
-        setYamlText(doc.yaml);
-    }, [workspace, doc.yaml]); 
+        if(doc){
+            setYamlText(yaml.dump(doc.specification));
+        }        
+    }, [workspace, doc.specification]); 
     
     const handleYamlChange = (event) => {
         setValid(false);

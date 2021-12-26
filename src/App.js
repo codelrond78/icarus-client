@@ -45,15 +45,10 @@ function App() {
         <Container maxW="80rem" centerContent>
           <HStack>
             <WorkspaceList />
-            {/*<VStack>
-              <ManageYaml workspace="abc" />
-              <HStack>
-                <RunButton workspace="abc"/>
-                <StopButton workspace="abc"/>
-              </HStack>
+            <VStack>
+              <ManageYaml workspace="gorilla" />
               <Terminal />          
             </VStack>            
-            */}
           </HStack>
         </Container>
       </ChakraProvider>
