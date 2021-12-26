@@ -29,12 +29,14 @@ async function save(workspace, yaml){
     console.log('save', workspace, yaml);
 }
 
+/*
 async function fork(workspace){
     const forkedName = getNameWorkspace();
     const url = `/api/workspace/${workspace}/fork/${forkedName}`;
     console.log('POST', url);
     //await axios.post('/api/workspace/' + workspace + '/fork/' + forkedName);
 }
+*/
 
 const EditButton = ({onClick}) => {
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Edit</Button>
@@ -47,7 +49,7 @@ const CancelEditButton = ({onClick}) => {
 const ForkButton = ({workspace, toggleEdit, setActiveWorkspace}) => {
     function onClick(){
         toggleEdit();
-        fork(workspace);
+        //fork(workspace);
         setActiveWorkspace(null);
     }
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Fork</Button>
