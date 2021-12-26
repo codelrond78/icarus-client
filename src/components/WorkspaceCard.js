@@ -22,12 +22,12 @@ function Port({port}){
 
 function Container({container}){
     const {name, status, ports} = container;
-
+    let color = status === 'running' ? "green" : 'red';
     return (
     <Box
         borderColor="gray"
     >
-        <div>{name}: {status}</div>
+        <div>{name}: <span style={{ color } }>{status}</span></div>
         <List>
           {ports.map(port => 
             <ListItem key={port}>
