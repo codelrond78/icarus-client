@@ -1,13 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {Terminal} from 'xterm';
+import { HStack } from "@chakra-ui/react";
 
-function ReactTerminal({}){
+function ReactTerminal({lines}){
+    const [linesWritten, setLinesWritten] = useState(new Set());
     const el = useRef(null);
+    var term = null;
+
+    if(term){
+        for(let line of lines){
+            if(!linesWritten.has(line)){
+                term.writeln(line);
+                setLinesWritten(new Set([...linesWritten, line]));
+            }            
+        }
+    }
 
     useEffect(()=>{                
         const current = el.current;
         if(current){
-            var term = new Terminal();    
+            term = new Terminal();    
             //term.open(document.getElementById('terminal'));
             term.open(current);
             var shellprompt = '$ ';
@@ -24,7 +36,10 @@ function ReactTerminal({}){
         return () => term.dispose
     }, [])
     
-    return <div><div ref={el}></div></div>
+    return (<HStack>
+            <span>Terminal</span>
+            <span ref={el}></span>
+        </HStack>)
 }
 
 export default ReactTerminal;
