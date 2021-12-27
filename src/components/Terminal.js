@@ -3,17 +3,15 @@ import {Terminal} from 'xterm';
 import { HStack } from "@chakra-ui/react";
 
 function ReactTerminal({lines}){
-    const [linesWritten, setLinesWritten] = useState(new Set());
+    const [linesWritten, setLinesWritten] = useState(0);
     const el = useRef(null);
     var term = null;
 
     if(term){
-        for(let line of lines){
-            if(!linesWritten.has(line)){
-                term.writeln(line);
-                setLinesWritten(new Set([...linesWritten, line]));
-            }            
+        for(let line of lines.slice(linesWritten)){
+            term.writeln(line);
         }
+        setLinesWritten(lines.length);
     }
 
     useEffect(()=>{                
