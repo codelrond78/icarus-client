@@ -8,6 +8,7 @@ import ManageYaml from './components/ManageYaml';
 import WorkspaceList from './components/WorkspaceList';
 import {RecoilRoot, useRecoilState, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
+import { useState } from 'react';
 
 /*
 const localLog = new PouchDB('localLog');
@@ -39,6 +40,7 @@ localWorkspaces.sync(remoteWorkspaces, {
 function Password(){
   // eslint-disable-next-line no-unused-vars
   const [password, setPassword] = useRecoilState(passwordAtom);
+  const [text, setText] = useState('');
   return (
     <Box position="relative">
       <Box
@@ -50,12 +52,14 @@ function Password(){
         transform="translateY(-50%, -50%)"
       >
         <Center bg='tomato' h='100%' w='100%' color='white'>
-          <Text>Icarus</Text>
-          <Input onKeyPress={e=> {
-              if (e.key === 'Enter') {
-                setPassword(e.value);
-              }
-          }}/>
+          <VStack>
+            <Text>Icarus</Text>
+            <Input onChange={(ev) => setText(ev.target.value)} onKeyPress={e=> {
+                if (e.key === 'Enter') {
+                  setPassword(text);
+                }
+            }}/>
+          </VStack>
         </Center>
       </Box>
     </Box>
