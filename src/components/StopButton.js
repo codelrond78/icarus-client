@@ -1,9 +1,11 @@
 import React from "react";
 import { Button } from "@chakra-ui/react";
-import axios from 'axios';
+//import axios from 'axios';
 
 async function stop(workspace){
-    await axios.put('/api/workspace/' + workspace + '/stop');
+    const url = `/api/workspace/${workspace}/stop`;
+    console.log(url);
+    //await axios.put(url);
 }
 
 const StopButton = ({workspace}) => {

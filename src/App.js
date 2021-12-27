@@ -1,41 +1,14 @@
 import './App.css';
 import { ChakraProvider, Container, Center, Input, Text, HStack, VStack, Box } from "@chakra-ui/react";
-import Terminal from './Terminal';
+import Terminal from './components/Terminal';
 import PouchDB from 'pouchdb-browser';
 import { Provider } from 'use-pouchdb';
-//import { HStack, VStack } from '@chakra-ui/react';
 import ManageYaml from './components/ManageYaml';
 import WorkspaceList from './components/WorkspaceList';
 import {RecoilRoot, useRecoilState, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
 import { useState } from 'react';
-
-/*
-const localLog = new PouchDB('localLog');
-const remoteLog = new PouchDB('http://admin:123@localhost:5984/icarus_log');
-
-localLog.sync(remoteLog, {
-  live: true,
-  retry: true,
-}).on('change', function (change) {
-  console.log(change)
-}).on('error', function (err) {
-  console.log('err en log:', err)
-});
-
-const localWorkspaces = new PouchDB('localWorkspaces')
-const remoteWorkspaces = new PouchDB('http://admin:123@localhost:5984/workspaces')
-
-localWorkspaces.sync(remoteWorkspaces, {
-  live: true,
-  retry: true,
-  filter: 'example/myWorkspaces',
-}).on('change', function (change) {
-  console.log(change)
-}).on('error', function (err) {
-  console.log('err en log:', err)
-});
-*/
+import 'xterm/css/xterm.css';
 
 function Password(){
   // eslint-disable-next-line no-unused-vars
@@ -125,7 +98,17 @@ function InnerApp(){
   )
 }
 
-function App() {  
+function App() {
+  return (
+  <ChakraProvider>
+        <RecoilRoot>
+          <Terminal />
+        </RecoilRoot>
+  </ChakraProvider>
+  )
+}
+
+function _App() {  
   
   return (
       <ChakraProvider>
