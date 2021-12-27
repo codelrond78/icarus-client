@@ -1,6 +1,7 @@
 import './App.css';
 import { ChakraProvider, Container, Center, Input, Text, HStack, VStack, Box } from "@chakra-ui/react";
-import Terminal from './components/Terminal';
+//import Terminal from './components/Terminal';
+import Shell from './components/Shell';
 import PouchDB from 'pouchdb-browser';
 import { Provider } from 'use-pouchdb';
 import ManageYaml from './components/ManageYaml';
@@ -8,7 +9,6 @@ import WorkspaceList from './components/WorkspaceList';
 import {RecoilRoot, useRecoilState, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
 import { useState } from 'react';
-import Highlight from 'react-highlight';
 import 'xterm/css/xterm.css';
 import 'highlight.js/styles/solarized-light.css';
 
@@ -90,7 +90,7 @@ function InnerApp(){
             <WorkspaceList />
             <VStack style={ {maxWidth: '500px'} }>
               <ManageYaml workspace="gorilla" />
-              <Terminal />          
+              <Shell />          
             </VStack>            
           </HStack>
         </Container>
@@ -100,15 +100,7 @@ function InnerApp(){
   )
 }
 
-const Shell = () => {
-  const text = `
-$ docker-compose up -d
-starting containers...  
-`;
-
-  return <Highlight  className='shell'>{text}</Highlight>
-}
-
+/*
 function App() {
   return (
   <ChakraProvider>
@@ -118,8 +110,9 @@ function App() {
   </ChakraProvider>
   )
 }
+*/
 
-function _App() {  
+function App() {  
   
   return (
       <ChakraProvider>
