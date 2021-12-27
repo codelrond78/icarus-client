@@ -8,7 +8,9 @@ import WorkspaceList from './components/WorkspaceList';
 import {RecoilRoot, useRecoilState, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
 import { useState } from 'react';
+import Highlight from 'react-highlight';
 import 'xterm/css/xterm.css';
+import 'highlight.js/styles/solarized-light.css';
 
 function Password(){
   // eslint-disable-next-line no-unused-vars
@@ -98,11 +100,20 @@ function InnerApp(){
   )
 }
 
+const Shell = () => {
+  const text = `
+$ docker-compose up -d
+starting containers...  
+`;
+
+  return <Highlight  className='shell'>{text}</Highlight>
+}
+
 function App() {
   return (
   <ChakraProvider>
         <RecoilRoot>
-          <Terminal />
+          <Shell />
         </RecoilRoot>
   </ChakraProvider>
   )
