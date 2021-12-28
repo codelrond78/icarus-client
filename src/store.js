@@ -20,7 +20,7 @@ export const currentWorkspaceYaml = atom({
 
 export const passwordAtom = atom({
   key: 'password', 
-  default: null, 
+  default: "", 
 });
 
 export const activeWorkspaceName = atom({

@@ -21,12 +21,14 @@ async function create(yaml, description){
     console.log('POST', url);
     console.log(yaml);
     console.log(description);
-    await axios.post(url, {yaml, description});
+    //await axios.post(url, {yaml, description});
 }
 
 async function save(workspace, yaml, description){
     const url = `/api/workspace/${workspace}`;
-    console.log('PUT', url, yaml, description);
+    console.log('PUT', url);
+    console.log(yaml);
+    console.log(description);
     //await axios.put(url, {yaml, description})
 }
 
@@ -67,7 +69,7 @@ const ManageYaml = () => {
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
     const { doc } = useDoc(workspace, {db: 'localWorkspaces'});
     
-    const [yamlText, setYamlText] = useState('#una descripción\n"version": ";)"');
+    const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
 
     useEffect(() => {
         if(doc){

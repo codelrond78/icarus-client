@@ -61,7 +61,7 @@ function InnerApp(){
           <HStack>
             <WorkspaceList />
             <VStack style={ {maxWidth: '500px'} }>
-              <ManageYaml workspace="gorilla" />                        
+              <ManageYaml workspace={null} />                        
             </VStack>            
             <Shell />
           </HStack>

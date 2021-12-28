@@ -31,7 +31,6 @@ function Password(){
                     <Input  type={show ? 'text' : 'password'} 
                             bg="white" 
                             color='tomato' 
-                            value={password}
                             onChange={(ev) => setText(ev.target.value)} 
                             onKeyPress={e=> {
                                 if (e.key === 'Enter') {
