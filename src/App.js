@@ -1,49 +1,17 @@
 import './App.css';
-import { ChakraProvider, Container, Center, Input, Text, HStack, VStack, Box } from "@chakra-ui/react";
+import { ChakraProvider, Container,  
+         HStack, VStack
+} from "@chakra-ui/react";
 //import Terminal from './components/Terminal';
 import Shell from './components/Shell';
 import PouchDB from 'pouchdb-browser';
 import { Provider } from 'use-pouchdb';
 import ManageYaml from './components/ManageYaml';
 import WorkspaceList from './components/WorkspaceList';
-import {RecoilRoot, useRecoilState, useRecoilValue} from 'recoil';
+import {RecoilRoot, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
-import { useState } from 'react';
-//import 'xterm/css/xterm.css';
 import 'highlight.js/styles/solarized-light.css';
-
-function Password(){
-  // eslint-disable-next-line no-unused-vars
-  const [password, setPassword] = useRecoilState(passwordAtom);
-  const [text, setText] = useState('');
-  return (
-    <Box position="relative">
-      <Box
-        height="100vh"
-        width="100%"
-        position="absolute"
-        top="0"
-        left="0"
-        transform="translateY(-50%, -50%)"
-      >
-        <Center bg='tomato' h='100%' w='100%' color='white'>
-          <VStack>
-            <Box border='2px solid' borderColor='white'>
-              <Box ml='20px' mr='20px' mt='20px' mb='20px'>
-                <Text align='center'>Icarus</Text>
-                <Input bg="white" color='tomato' onChange={(ev) => setText(ev.target.value)} onKeyPress={e=> {
-                    if (e.key === 'Enter') {
-                      setPassword(text);
-                    }
-                }}/>
-              </Box>  
-            </Box>
-          </VStack>
-        </Center>
-      </Box>
-    </Box>
-  )
-}
+import Password from './components/Password';
 
 function MyPouchProvider({password, children}){
   console.log('entramos en my pouch provider')
