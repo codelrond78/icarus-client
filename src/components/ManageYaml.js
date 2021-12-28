@@ -19,12 +19,16 @@ function getNameWorkspace(){
 async function create(yaml, description){
     const workspace = getNameWorkspace();
     const url = `/api/workspace/${workspace}`;
-    console.log('POST', url, yaml);
+    console.log('POST', url);
+    console.log(yaml);
+    console.log(description);
     await axios.post(url, {yaml, description});
 }
 
 async function save(workspace, yaml, description){
-    console.log('save', workspace, yaml);
+    const url = `/api/workspace/${workspace}`;
+    console.log('PUT', url, yaml, description);
+    //await axios.put(url, {yaml, description})
 }
 
 /*
@@ -72,7 +76,7 @@ const SaveButton = ({workspace, toggleEdit, yaml, description}) => {
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
     const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'});
-    console.log(loading, state, error)
+    
     const [isValid, setValid] = useState(true);
     const [edit, setEdit] = useState(false);
     const [yamlText, setYamlText] = useState('"version": ";)"');
@@ -86,7 +90,7 @@ const ManageYaml = () => {
     }, [workspace, doc]); 
     
     const handleYamlChange = (event) => {
-        setValid(false);
+        //setValid(false);
         setYamlText(event.target.value);
     }
     const toggleEdit = () => setEdit(!edit);
@@ -95,8 +99,10 @@ const ManageYaml = () => {
         <VStack>
             {edit ? 
                 <VStack>
+                    <Text>Description</Text>
                     <Textarea value={description} onChange={(ev)=>setDescription(ev.target.value)} />
-                    <Textarea value={yamlText} onChange={handleYamlChange} />
+                    <Text>Specification</Text>
+                    <Textarea style={{width: '300px', height: '400px'}} value={yamlText} onChange={handleYamlChange} />
                     <HStack>
                         {   !isValid ? (<Button>Validate</Button>) :
                             (workspace ? 

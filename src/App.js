@@ -28,12 +28,16 @@ function Password(){
       >
         <Center bg='tomato' h='100%' w='100%' color='white'>
           <VStack>
-            <Text>Icarus</Text>
-            <Input onChange={(ev) => setText(ev.target.value)} onKeyPress={e=> {
-                if (e.key === 'Enter') {
-                  setPassword(text);
-                }
-            }}/>
+            <Box border='2px solid' borderColor='white'>
+              <Box ml='20px' mr='20px' mt='20px' mb='20px'>
+                <Text align='center'>Icarus</Text>
+                <Input onChange={(ev) => setText(ev.target.value)} onKeyPress={e=> {
+                    if (e.key === 'Enter') {
+                      setPassword(text);
+                    }
+                }}/>
+              </Box>  
+            </Box>
           </VStack>
         </Center>
       </Box>
@@ -89,9 +93,9 @@ function InnerApp(){
           <HStack>
             <WorkspaceList />
             <VStack style={ {maxWidth: '500px'} }>
-              <ManageYaml workspace="gorilla" />
-              <Shell />          
+              <ManageYaml workspace="gorilla" />                        
             </VStack>            
+            <Shell />
           </HStack>
         </Container>
       </MyPouchProvider>

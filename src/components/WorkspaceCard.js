@@ -51,7 +51,6 @@ function Card({workspace:  {id, description, containers}}) {
   const {doc} = useDoc(id, {db: 'localWorkspaces'})
 
   function deleteWorkspace(){
-    console.log('my doc', doc, id)
     db.remove(doc);
   }
 
@@ -74,7 +73,7 @@ function Card({workspace:  {id, description, containers}}) {
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />
-          <Button onClick={()=>deleteWorkspace()}>Delete</Button>
+          <Button colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>
         </HStack>
         <List>
           {containers.map(container => 
