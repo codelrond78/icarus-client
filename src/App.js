@@ -9,7 +9,7 @@ import WorkspaceList from './components/WorkspaceList';
 import {RecoilRoot, useRecoilState, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
 import { useState } from 'react';
-import 'xterm/css/xterm.css';
+//import 'xterm/css/xterm.css';
 import 'highlight.js/styles/solarized-light.css';
 
 function Password(){
