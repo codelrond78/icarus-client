@@ -72,7 +72,6 @@ const ManageYaml = () => {
     useEffect(() => {
         if(doc){
             setYamlText(doc.specification);
-            //setYamlText(yaml.dump(doc.specification));
         }        
     }, [workspace, doc]); 
     
@@ -85,6 +84,7 @@ const ManageYaml = () => {
                 </HStack>
                 <CodeEditor
                     value={yamlText}
+                    minHeight="500px"                    
                     language="yaml"
                     placeholder="Please enter JS code."
                     onChange={(evn) => setYamlText(evn.target.value)}

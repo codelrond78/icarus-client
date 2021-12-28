@@ -10,6 +10,8 @@ import {
   ListIcon,
   Button
 } from "@chakra-ui/react";
+import { IoTrashOutline } from "react-icons/io5";
+import { Icon } from '@chakra-ui/react';
 import StopButton from "./StopButton";
 import RunButton from "./RunButton";
 import { ExternalLinkIcon, ViewIcon } from '@chakra-ui/icons';
@@ -73,7 +75,7 @@ function Card({workspace:  {id, description, containers}}) {
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />
-          <Button colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>
+          <Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>
         </HStack>
         <List>
           {containers.map(container => 
