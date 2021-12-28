@@ -31,7 +31,7 @@ function Password(){
             <Box border='2px solid' borderColor='white'>
               <Box ml='20px' mr='20px' mt='20px' mb='20px'>
                 <Text align='center'>Icarus</Text>
-                <Input onChange={(ev) => setText(ev.target.value)} onKeyPress={e=> {
+                <Input bg="white" color='tomato' onChange={(ev) => setText(ev.target.value)} onKeyPress={e=> {
                     if (e.key === 'Enter') {
                       setPassword(text);
                     }

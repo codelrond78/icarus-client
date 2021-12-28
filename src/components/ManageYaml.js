@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, Textarea, HStack, VStack } from "@chakra-ui/react";
+import { Button, VStack, HStack } from "@chakra-ui/react";
 import axios from 'axios';
-//import { HStack, VStack } from '@chakra-ui/react';
-import Highlight from 'react-highlight';
-//import { Textarea } from '@chakra-ui/react';
 import { useDoc } from 'use-pouchdb';
 import { useRecoilState } from 'recoil';
 import { activeWorkspaceName} from '../store';
-import yaml from 'js-yaml';
 import generateRandomAnimalName from 'random-animal-name-generator';
+import CodeEditor from '@uiw/react-textarea-code-editor';
+import { VscRepoForked } from "react-icons/vsc";
+import { Icon } from '@chakra-ui/react'
   
 function getNameWorkspace(){
     const name = generateRandomAnimalName();
@@ -31,42 +30,33 @@ async function save(workspace, yaml, description){
     //await axios.put(url, {yaml, description})
 }
 
-/*
-async function fork(workspace){
-    const forkedName = getNameWorkspace();
-    const url = `/api/workspace/${workspace}/fork/${forkedName}`;
-    console.log('POST', url);
-    //await axios.post('/api/workspace/' + workspace + '/fork/' + forkedName);
-}
-*/
-
-const EditButton = ({onClick}) => {
-    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Edit</Button>
+const ForkButton = ({setActiveWorkspace}) => {
+    return <Button onClick={()=>setActiveWorkspace(null)} leftIcon={<Icon as={VscRepoForked} />} colorScheme='teal' variant='outline'>
+        Fork
+    </Button>
 }
 
-const CancelEditButton = ({onClick}) => {
-    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Cancel</Button>
-}
-
-const ForkButton = ({toggleEdit, setActiveWorkspace}) => {
+const CreateButton = ({yaml}) => {
+    const description = getDescriptionFromYaml(yaml);
     function onClick(){
-        toggleEdit();
-        //fork(workspace);
-        setActiveWorkspace(null);
-    }
-    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Fork</Button>
-}
-
-const CreateButton = ({yaml, toggleEdit, description}) => {
-    function onClick(){
-        toggleEdit();
         create(yaml, description);
     }
     return <Button colorScheme='teal' variant='outline' onClick={onClick}>Create</Button>
 }
 
-const SaveButton = ({workspace, toggleEdit, yaml, description}) => {
-    toggleEdit();
+function getDescriptionFromYaml(yaml){
+    const lines = yaml.split('\n');
+    let ret = [];
+    for(let line of lines){
+        if(!line.startsWith('#')) 
+            break;
+        ret.push(line)
+    }
+    return ret.join('\n')
+}
+
+const SaveButton = ({workspace, yaml}) => {
+    const description = getDescriptionFromYaml(yaml);
     return <Button colorScheme='teal' variant='outline' onClick={()=>save(workspace, yaml, description)}>Save</Button>
 }
 
@@ -75,55 +65,42 @@ const SaveButton = ({workspace, toggleEdit, yaml, description}) => {
 
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-    const { doc, loading, state, error } = useDoc(workspace, {db: 'localWorkspaces'});
+    const { doc } = useDoc(workspace, {db: 'localWorkspaces'});
     
-    const [isValid, setValid] = useState(true);
-    const [edit, setEdit] = useState(false);
-    const [yamlText, setYamlText] = useState('"version": ";)"');
-    const [description, setDescription] = useState("");
+    const [yamlText, setYamlText] = useState('#una descripción\n"version": ";)"');
 
     useEffect(() => {
         if(doc){
-            setDescription(doc.description);
-            setYamlText(yaml.dump(doc.specification));
+            setYamlText(doc.specification);
+            //setYamlText(yaml.dump(doc.specification));
         }        
     }, [workspace, doc]); 
     
-    const handleYamlChange = (event) => {
-        //setValid(false);
-        setYamlText(event.target.value);
-    }
-    const toggleEdit = () => setEdit(!edit);
 
     return (
         <VStack>
-            {edit ? 
-                <VStack>
-                    <Text>Description</Text>
-                    <Textarea value={description} onChange={(ev)=>setDescription(ev.target.value)} />
-                    <Text>Specification</Text>
-                    <Textarea style={{width: '300px', height: '400px'}} value={yamlText} onChange={handleYamlChange} />
-                    <HStack>
-                        {   !isValid ? (<Button>Validate</Button>) :
-                            (workspace ? 
-                                <SaveButton workspace={workspace} yaml={yamlText} description={description} toggleEdit={toggleEdit} /> 
-                                :
-                                <CreateButton yaml={yamlText} description={description} toggleEdit={toggleEdit} />
-                            )
-                        }
-                        <CancelEditButton onClick={toggleEdit} />
-                    </HStack>
-                </VStack>
-                :
-                <VStack>
-                    <HStack>
-                        <EditButton onClick={toggleEdit} />
-                        <ForkButton toggleEdit={toggleEdit} setActiveWorkspace={setActiveWorkspace} />                        
-                    </HStack>
-                    <Text>{description}</Text>
-                    <Highlight className='yaml'>{yamlText}</Highlight>
-                </VStack>                
-            }
+            <VStack>
+                <HStack>
+                    <ForkButton setActiveWorkspace={setActiveWorkspace} />
+                </HStack>
+                <CodeEditor
+                    value={yamlText}
+                    language="yaml"
+                    placeholder="Please enter JS code."
+                    onChange={(evn) => setYamlText(evn.target.value)}
+                    padding={15}
+                    style={{
+                        fontSize: 12,
+                        backgroundColor: "#f5f5f5",
+                        fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                    }}
+                    />
+                {workspace ? 
+                    <SaveButton workspace={workspace} yaml={yamlText} /> 
+                    :
+                    <CreateButton yaml={yamlText} />
+                }
+            </VStack>
         </VStack>
     )
 }
