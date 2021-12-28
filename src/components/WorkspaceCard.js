@@ -7,13 +7,15 @@ import {
   HStack,
   List,
   ListItem,
-  ListIcon
+  ListIcon,
+  Button
 } from "@chakra-ui/react";
 import StopButton from "./StopButton";
 import RunButton from "./RunButton";
 import { ExternalLinkIcon, ViewIcon } from '@chakra-ui/icons';
 import { useRecoilState } from "recoil";
 import { activeWorkspaceName } from '../store';
+import { usePouch, useDoc } from 'use-pouchdb'
 
 function Port({port}){
     return (
@@ -45,6 +47,13 @@ function Container({container}){
 function Card({workspace:  {id, description, containers}}) {
   // eslint-disable-next-line no-unused-vars
   const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
+  const db = usePouch('localWorkspaces')
+  const {doc} = useDoc(id, {db: 'localWorkspaces'})
+
+  function deleteWorkspace(){
+    console.log('my doc', doc, id)
+    db.remove(doc);
+  }
 
   return (
     <Box
@@ -65,6 +74,7 @@ function Card({workspace:  {id, description, containers}}) {
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />
+          <Button onClick={()=>deleteWorkspace()}>Delete</Button>
         </HStack>
         <List>
           {containers.map(container => 
