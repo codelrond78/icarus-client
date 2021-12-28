@@ -63,7 +63,7 @@ function MyPouchProvider({password, children}){
     retry: true,
     filter: 'example/myWorkspaces',
   }).on('change', function (change) {
-    console.log(change)
+    console.log('!!!!!!!!!!!! change', change)
   }).on('error', function (err) {
     console.log('err en log:', err)
   });
