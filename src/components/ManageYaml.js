@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, VStack, HStack } from "@chakra-ui/react";
-import axios from 'axios';
-import { useDoc } from 'use-pouchdb';
+import { useDoc, usePouch } from 'use-pouchdb';
 import { useRecoilState } from 'recoil';
 import { activeWorkspaceName} from '../store';
 import generateRandomAnimalName from 'random-animal-name-generator';
@@ -15,35 +14,10 @@ function getNameWorkspace(){
     return name.split(' ')[1];
 }
 
-async function create(yaml, description){
-    const workspace = getNameWorkspace();
-    const url = `/api/workspace/${workspace}`;
-    console.log('POST', url);
-    console.log(yaml);
-    console.log(description);
-    await axios.post(url, {yaml, description});
-}
-
-async function save(workspace, yaml, description){
-    const url = `/api/workspace/${workspace}`;
-    console.log('PUT', url);
-    console.log(yaml);
-    console.log(description);
-    await axios.put(url, {yaml, description})
-}
-
 const ForkButton = ({setActiveWorkspace}) => {
     return <Button onClick={()=>setActiveWorkspace(null)} leftIcon={<Icon as={VscRepoForked} />} colorScheme='teal' variant='outline'>
         Fork
     </Button>
-}
-
-const CreateButton = ({yaml}) => {
-    const description = getDescriptionFromYaml(yaml);
-    function onClick(){
-        create(yaml, description);
-    }
-    return <Button colorScheme='teal' variant='outline' onClick={onClick}>Create</Button>
 }
 
 function getDescriptionFromYaml(yaml){
@@ -57,17 +31,13 @@ function getDescriptionFromYaml(yaml){
     return ret.join('\n')
 }
 
-const SaveButton = ({workspace, yaml}) => {
-    const description = getDescriptionFromYaml(yaml);
-    return <Button colorScheme='teal' variant='outline' onClick={()=>save(workspace, yaml, description)}>Save</Button>
-}
-
 //const ClearButton
 //const ValidateButton
 
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
     const { doc } = useDoc(workspace, {db: 'localWorkspaces'});
+    const db = usePouch('localWorkspaces')
     
     const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
 
@@ -77,6 +47,17 @@ const ManageYaml = () => {
         }        
     }, [workspace, doc]); 
     
+    async function handleCreate(){
+        const description = getDescriptionFromYaml(yamlText);
+        const workspace = getNameWorkspace();
+        await db.post({id: workspace, description, specification: yamlText});
+    }
+
+    async function handleSave(){
+        const description = getDescriptionFromYaml(yamlText);
+        const doc = await db.get(workspace);
+        await db.put({...doc, specification: yamlText, description});
+    }
 
     return (
         <VStack>
@@ -99,9 +80,9 @@ const ManageYaml = () => {
                     }}
                     />
                 {workspace ? 
-                    <SaveButton workspace={workspace} yaml={yamlText} /> 
+                    <Button colorScheme='teal' variant='outline' onClick={handleSave}>Save</Button>
                     :
-                    <CreateButton yaml={yamlText} />
+                    <Button colorScheme='teal' variant='outline' onClick={handleCreate}>Create</Button>
                 }
             </VStack>
         </VStack>
