@@ -46,7 +46,7 @@ function Container({container}){
     )
 }
 
-function Card({workspace:  {id, description, containers}}) {
+function Card({workspace:  {id, description, containers, specification}}) {
   // eslint-disable-next-line no-unused-vars
   const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
   const db = usePouch('localWorkspaces')
@@ -73,8 +73,8 @@ function Card({workspace:  {id, description, containers}}) {
       >
         <Link onClick={()=>setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
         <HStack>
-          <RunButton workspace={id} />
-          <StopButton workspace={id} />
+          <RunButton workspace={id} specification={specification} />
+          <StopButton workspace={id} specification={specification} />
           {/*<Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>*/}
         </HStack>
         <List>

@@ -4,14 +4,14 @@ import axios from 'axios';
 import { VscDebugStop } from "react-icons/vsc";
 import { Icon } from '@chakra-ui/react';
 
-async function stop(workspace){
+async function stop(workspace, specification){
     const url = `/api/workspace/${workspace}/stop`;
     console.log(url);
-    await axios.put(url);
+    await axios.put(url, {specification});
 }
 
-const StopButton = ({workspace}) => {
-    return <Button leftIcon={<Icon as={VscDebugStop} />} colorScheme='pink' onClick={()=>stop(workspace)}>Stop</Button>
+const StopButton = ({workspace, specification}) => {
+    return <Button leftIcon={<Icon as={VscDebugStop} />} colorScheme='pink' onClick={()=>stop(workspace, specification)}>Stop</Button>
 }
 
 export default StopButton;

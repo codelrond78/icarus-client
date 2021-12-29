@@ -1,0 +1,12 @@
+version: "3"
+services:
+  code:
+    image: icarus/code-python:3.8
+    environment:
+      - REPO=https://github.com/libgit2/libgit2
+      - GIT_USER=codelrond
+      - GIT_USER_EMAIL=codelrond@protonmail.com
+      - PASSWORD=123
+    ports:
+      - 8082:8080
+

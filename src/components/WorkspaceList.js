@@ -13,12 +13,9 @@ const WorkspaceList = () => {
         include_docs: true, 
         descending: true
       })
-    console.log('workspaces', workspaces);
-    for(let www of workspaces){
-        console.log('---->', www._deleted);
-    }
+
     let myWorkspaces = workspaces.filter(w =>w.doc.type === 'workspace').map(w => (
-            {id: w.id, description: w.doc.description, containers: w.doc.containers}
+            {id: w.id, description: w.doc.description, containers: w.doc.containers, specification: w.doc.specification}
         )
     )
     console.log(myWorkspaces);
