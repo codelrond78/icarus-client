@@ -14,12 +14,6 @@ function getNameWorkspace(){
     return name.split(' ')[1];
 }
 
-const ForkButton = ({setActiveWorkspace}) => {
-    return <Button onClick={()=>setActiveWorkspace(null)} leftIcon={<Icon as={VscRepoForked} />} colorScheme='teal' variant='outline'>
-        Fork
-    </Button>
-}
-
 function getDescriptionFromYaml(yaml){
     const lines = yaml.split('\n');
     let ret = [];
@@ -50,7 +44,7 @@ const ManageYaml = () => {
     async function handleCreate(){
         const description = getDescriptionFromYaml(yamlText);
         const workspace = getNameWorkspace();
-        await db.post({id: workspace, description, specification: yamlText});
+        await db.post({_id: workspace, description, specification: yamlText});
     }
 
     async function handleSave(){
@@ -59,12 +53,21 @@ const ManageYaml = () => {
         await db.put({...doc, specification: yamlText, description});
     }
 
+    async function handleFork(){
+        const description = getDescriptionFromYaml(yamlText);
+        const workspace = getNameWorkspace();
+        await db.post({_id: workspace, description, specification: yamlText});
+        setActiveWorkspace(workspace);
+    }
+
     return (
         <VStack>
             <VStack>
                 <span>{workspace || 'without name'}</span>
                 <HStack>
-                    <ForkButton setActiveWorkspace={setActiveWorkspace} />
+                    <Button onClick={handleFork} leftIcon={<Icon as={VscRepoForked} />} colorScheme='teal' variant='outline'>
+                        Fork
+                    </Button>
                 </HStack>
                 <CodeEditor
                     value={yamlText}
