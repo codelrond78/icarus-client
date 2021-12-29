@@ -1,13 +1,13 @@
 import React from "react";
 import { Button } from "@chakra-ui/react";
-//import axios from 'axios';
+import axios from 'axios';
 import { VscDebugStop } from "react-icons/vsc";
 import { Icon } from '@chakra-ui/react';
 
 async function stop(workspace){
     const url = `/api/workspace/${workspace}/stop`;
     console.log(url);
-    //await axios.put(url);
+    await axios.put(url);
 }
 
 const StopButton = ({workspace}) => {

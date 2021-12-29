@@ -21,7 +21,7 @@ async function create(yaml, description){
     console.log('POST', url);
     console.log(yaml);
     console.log(description);
-    //await axios.post(url, {yaml, description});
+    await axios.post(url, {yaml, description});
 }
 
 async function save(workspace, yaml, description){
@@ -29,7 +29,7 @@ async function save(workspace, yaml, description){
     console.log('PUT', url);
     console.log(yaml);
     console.log(description);
-    //await axios.put(url, {yaml, description})
+    await axios.put(url, {yaml, description})
 }
 
 const ForkButton = ({setActiveWorkspace}) => {
@@ -81,6 +81,7 @@ const ManageYaml = () => {
     return (
         <VStack>
             <VStack>
+                <span>{workspace || 'without name'}</span>
                 <HStack>
                     <ForkButton setActiveWorkspace={setActiveWorkspace} />
                 </HStack>

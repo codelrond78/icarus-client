@@ -57,7 +57,7 @@ function InnerApp(){
     <div>
       {!password ? <Password /> : (
       <MyPouchProvider password={password}>
-        <Container maxW="80rem" centerContent>
+        <Container maxW="80rem" centerContent bg='tomato' h='100%' w='100%' color='white'>
           <HStack>
             <WorkspaceList />
             <VStack style={ {maxWidth: '500px'} }>

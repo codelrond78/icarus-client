@@ -63,7 +63,7 @@ function Card({workspace:  {id, description, containers}}) {
       maxWidth="32rem"
       borderWidth={4}
       margin={2}
-      borderColor={'gray'}
+      borderColor={'white'}
     >
       <Stack
         align={{ base: "center", md: "stretch" }}
@@ -75,7 +75,7 @@ function Card({workspace:  {id, description, containers}}) {
         <HStack>
           <RunButton workspace={id} />
           <StopButton workspace={id} />
-          <Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>
+          {/*<Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>*/}
         </HStack>
         <List>
           {containers.map(container => 
