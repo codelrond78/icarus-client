@@ -47,7 +47,7 @@ const ManageYaml = () => {
     async function handleCreate(){
         const description = getDescriptionFromYaml(yamlText);
         const workspace = getNameWorkspace();
-        await db.post({_id: workspace, description, specification: yamlText});
+        await db.post({_id: workspace, description, specification: yamlText, type: 'workspace', containers: []});
     }
 
     async function handleSave(){
