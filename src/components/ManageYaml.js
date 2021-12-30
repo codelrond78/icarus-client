@@ -6,7 +6,7 @@ import { activeWorkspaceName} from '../store';
 import generateRandomAnimalName from 'random-animal-name-generator';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { VscRepoForked } from "react-icons/vsc";
-import { Icon } from '@chakra-ui/react'
+import { Icon, useToast } from '@chakra-ui/react'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -34,8 +34,8 @@ function getDescriptionFromYaml(yaml){
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
     const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'});
-    const db = usePouch('remoteWorkspaces')
-    
+    const db = usePouch('remoteWorkspaces');
+    const toast = useToast();    
     const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
 
     useEffect(() => {
@@ -45,15 +45,49 @@ const ManageYaml = () => {
     }, [workspace, doc]); 
     
     async function handleCreate(){
-        const description = getDescriptionFromYaml(yamlText);
-        const workspace = getNameWorkspace();
-        await db.post({_id: workspace, description, specification: yamlText, type: 'workspace', containers: []});
+        try{
+            const description = getDescriptionFromYaml(yamlText);
+            const workspace = getNameWorkspace();
+            await db.post({_id: workspace, description, specification: yamlText, type: 'workspace', containers: []});
+            toast({
+                title: 'Workspace POST.',
+                description: "We've created your account for you.",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+              })
+        }catch(err){
+            toast({
+                title: 'Workspace POST.',
+                description: "We've created your account for you.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              })
+        }        
     }
 
     async function handleSave(){
-        const description = getDescriptionFromYaml(yamlText);
-        const doc = await db.get(workspace);
-        await db.put({...doc, specification: yamlText, description});
+        try{
+            const description = getDescriptionFromYaml(yamlText);
+            const doc = await db.get(workspace);
+            await db.put({...doc, specification: yamlText, description});
+            toast({
+                title: 'Workspace PUT.',
+                description: "We've created your account for you.",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+              })
+        }catch(err){
+            toast({
+                title: 'Workspace PUT.',
+                description: "We've created your account for you.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              })
+        }
     }
 
     async function handleFork(){

@@ -3,9 +3,8 @@ import { useAllDocs } from 'use-pouchdb';
 import Highlight from 'react-highlight';
 import { Box } from "@chakra-ui/react";
 
-function terminalLineData(docs){
-    console.log('-->', docs)
-    let mappedLines = docs.map(doc => doc.doc.line.type === 'input' ? doc.doc.line.timestamp + '$' + doc.doc.line.text.trim(): doc.doc.line.text.trim());
+function terminalLineData(lines){
+    let mappedLines = lines.map(line => line.doc.type === 'input' ? line.doc.timestamp + ' $' + line.doc.text.trim(): line.doc.text.trim());
     return mappedLines.join("\n");
 }
 

@@ -55,6 +55,9 @@ function Card({workspace:  {id, description, containers, specification}}) {
 
   async function deleteWorkspace(){
     await db.put({...doc, _deleted: true});
+    if(id === doc._id){
+      setActiveWorkspace(null);
+    }
   }
 
   return (
@@ -62,9 +65,8 @@ function Card({workspace:  {id, description, containers, specification}}) {
       p={4}
       display={{ md: "flex" }}
       maxWidth="32rem"
-      borderWidth={4}
+      borderWidth={2}
       margin={2}
-      borderColor={'white'}
     >
       <Stack
         align={{ base: "center", md: "stretch" }}
@@ -72,6 +74,7 @@ function Card({workspace:  {id, description, containers, specification}}) {
         mt={{ base: 4, md: 0 }}
         ml={{ md: 6 }}
       >
+        <Text>{id.substring(0, 15)}</Text>
         <Link onClick={()=>setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
         <HStack>
           <RunButton workspace={id} specification={specification} />
