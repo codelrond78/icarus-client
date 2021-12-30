@@ -48,7 +48,13 @@ const ManageYaml = () => {
         try{
             const description = getDescriptionFromYaml(yamlText);
             const workspace = getNameWorkspace();
-            await db.post({_id: workspace, description, specification: yamlText, type: 'workspace', containers: []});
+            await db.post({_id: workspace, 
+                            description, 
+                            specification: yamlText, 
+                            type: 'workspace',
+                            pinned: false,
+                            isTemplate: false,
+                            containers: []});
             toast({
                 title: 'Workspace POST.',
                 description: "We've created your account for you.",

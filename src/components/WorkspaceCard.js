@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Checkbox,
   Box,
   Text,
   Link,
@@ -47,7 +48,7 @@ function Container({container}){
     )
 }
 
-function Card({workspace:  {id, description, containers, specification}}) {
+function Card({workspace:  {id, description, containers, specification, isTemplate}}) {
   // eslint-disable-next-line no-unused-vars
   const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
   const db = usePouch('remoteWorkspaces')
@@ -58,6 +59,11 @@ function Card({workspace:  {id, description, containers, specification}}) {
     if(id === doc._id){
       setActiveWorkspace(null);
     }
+  }
+
+  async function handleIsChecked(){
+    const doc = await db.get(id);
+    await db.put({...doc, isTemplate: !isTemplate});
   }
 
   return (
@@ -75,6 +81,7 @@ function Card({workspace:  {id, description, containers, specification}}) {
         ml={{ md: 6 }}
       >
         <Text>{id.substring(0, 15)}</Text>
+        <Checkbox isChecked={isTemplate} onChange={handleIsChecked}>Template?</Checkbox>
         <Link onClick={()=>setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
         <HStack>
           <RunButton workspace={id} specification={specification} />
