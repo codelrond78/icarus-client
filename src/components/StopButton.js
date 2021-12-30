@@ -7,7 +7,8 @@ import { Icon } from '@chakra-ui/react';
 async function stop(workspace, specification){
     const url = `/api/workspace/${workspace}/stop`;
     console.log(url);
-    await axios.put(url, {specification});
+    const response = await axios.put(url, {specification});
+    console.log(response.data);
 }
 
 const StopButton = ({workspace, specification}) => {

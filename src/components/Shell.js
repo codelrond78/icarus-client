@@ -4,7 +4,7 @@ import Highlight from 'react-highlight';
 import { Box } from "@chakra-ui/react";
 
 function terminalLineData(docs){
-    let mappedLines = docs.map(doc => doc.doc.line.type === 'input' ? '$' + doc.doc.line.text: doc.doc.line.text);
+    let mappedLines = docs.map(doc => doc.doc.line.type === 'input' ? '$' + doc.doc.line.text.trim(): doc.doc.line.text.trim());
     return mappedLines.join("\n");
 }
 

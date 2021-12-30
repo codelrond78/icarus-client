@@ -7,7 +7,8 @@ import { Icon } from '@chakra-ui/react';
 async function start(workspace, specification){
     const url = `/api/workspace/${workspace}/run`;
     console.log(url);
-    await axios.put(url, {specification});
+    const response = await axios.put(url, {specification});
+    console.log(response.data);
 }
 
 const StartButton = ({workspace, specification}) => {
