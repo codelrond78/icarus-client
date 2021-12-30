@@ -57,9 +57,12 @@ const ManageYaml = () => {
     }
 
     async function handleFork(){
+        /*
         const description = getDescriptionFromYaml(yamlText);
         const workspace = getNameWorkspace();
         await db.post({_id: workspace, description, specification: yamlText});
+        */
+        await handleCreate();
         setActiveWorkspace(workspace);
     }
 
