@@ -129,9 +129,9 @@ const ManageYaml = () => {
                     }}
                     />
                 {workspace ? 
-                    <Button colorScheme='teal' variant='outline' onClick={handleSave}>Save</Button>
+                    <Button disabled={doc.isTemplate} colorScheme='teal' variant='outline' onClick={handleSave}>Save</Button>
                     :
-                    <Button colorScheme='teal' variant='outline' onClick={handleCreate}>Create</Button>
+                    <Button disabled={doc.isTemplate} colorScheme='teal' variant='outline' onClick={handleCreate}>Create</Button>
                 }
             </VStack>
         </VStack>

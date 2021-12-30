@@ -16,7 +16,13 @@ const WorkspaceList = () => {
       })
 
     let myWorkspaces = workspaces.filter(w =>w.doc.type === 'workspace').map(w => (
-            {id: w.id, description: w.doc.description, containers: w.doc.containers, specification: w.doc.specification}
+            {
+                id: w.id, 
+                description: w.doc.description, 
+                containers: w.doc.containers, 
+                isTemplate: w.doc.isTemplate,
+                specification: w.doc.specification
+            }
         )
     )
     
