@@ -53,8 +53,8 @@ function Card({workspace:  {id, description, containers, specification}}) {
   const db = usePouch('localWorkspaces')
   const {doc} = useDoc(id, {db: 'localWorkspaces'})
 
-  function deleteWorkspace(){
-    db.remove(doc);
+  async function deleteWorkspace(){
+    await db.remove(doc);
   }
 
   return (
