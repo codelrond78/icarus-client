@@ -50,11 +50,11 @@ function Container({container}){
 function Card({workspace:  {id, description, containers, specification}}) {
   // eslint-disable-next-line no-unused-vars
   const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-  const db = usePouch('localWorkspaces')
-  const {doc} = useDoc(id, {db: 'localWorkspaces'})
+  const db = usePouch('remoteWorkspaces')
+  const {doc} = useDoc(id, {db: 'remoteWorkspaces'})
 
   async function deleteWorkspace(){
-    await db.remove(doc);
+    await db.put({...doc, _deleted: true});
   }
 
   return (
