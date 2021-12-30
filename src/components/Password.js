@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { passwordAtom } from '../store';
 
 function Password(){
+    // eslint-disable-next-line no-unused-vars
     const [password, setPassword] = useRecoilState(passwordAtom);
     const [text, setText] = useState('');
     const [show, setShow] = useState(false);

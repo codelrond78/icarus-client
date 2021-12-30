@@ -8,15 +8,17 @@ import {
   List,
   ListItem,
   ListIcon,
+  Button
 } from "@chakra-ui/react";
-//import { IoTrashOutline } from "react-icons/io5";
-//import { Icon } from '@chakra-ui/react';
+import { IoTrashOutline } from "react-icons/io5";
+import { Icon } from '@chakra-ui/react';
 import StopButton from "./StopButton";
 import RunButton from "./RunButton";
 import { ExternalLinkIcon, ViewIcon } from '@chakra-ui/icons';
 import { useRecoilState } from "recoil";
 import { activeWorkspaceName } from '../store';
-//import { usePouch, useDoc } from 'use-pouchdb'
+import { usePouch, useDoc } from 'use-pouchdb'
+
 
 function Port({port}){
     return (
@@ -48,12 +50,12 @@ function Container({container}){
 function Card({workspace:  {id, description, containers, specification}}) {
   // eslint-disable-next-line no-unused-vars
   const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-  //const db = usePouch('localWorkspaces')
-  //const {doc} = useDoc(id, {db: 'localWorkspaces'})
+  const db = usePouch('localWorkspaces')
+  const {doc} = useDoc(id, {db: 'localWorkspaces'})
 
-  /*function deleteWorkspace(){
+  function deleteWorkspace(){
     db.remove(doc);
-  }*/
+  }
 
   return (
     <Box
@@ -74,7 +76,7 @@ function Card({workspace:  {id, description, containers, specification}}) {
         <HStack>
           <RunButton workspace={id} specification={specification} />
           <StopButton workspace={id} specification={specification} />
-          {/*<Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={()=>deleteWorkspace()}>Delete</Button>*/}
+          <Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={deleteWorkspace}></Button>
         </HStack>
         <List>
           {containers.map(container => 

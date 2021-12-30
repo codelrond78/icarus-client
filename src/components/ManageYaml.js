@@ -7,11 +7,14 @@ import generateRandomAnimalName from 'random-animal-name-generator';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { VscRepoForked } from "react-icons/vsc";
 import { Icon } from '@chakra-ui/react'
-  
+import { v4 as uuidv4 } from 'uuid';
+
+
 function getNameWorkspace(){
-    const name = generateRandomAnimalName();
+    let name = generateRandomAnimalName();
     console.log('animal random', name)
-    return name.split(' ')[1];
+    name = name.split(' ')[1] + '-' + uuidv4();
+    return name;
 }
 
 function getDescriptionFromYaml(yaml){
