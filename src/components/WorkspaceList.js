@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import {
   List,
   ListItem,
-  Box, VStack, Checkbox
+  Box, VStack, Checkbox, Input
 } from "@chakra-ui/react";
 import WorkspaceCard from './WorkspaceCard';
 import { useAllDocs } from 'use-pouchdb';
 
 const WorkspaceList = () => {
     const [filterTemplates, setFilterTemplates] = useState(false);
+    const [filterByText, setFilterByText] = useState("");
     const { rows: workspaces } = useAllDocs({
         db: "localWorkspaces",
         include_docs: true, 
@@ -27,17 +28,23 @@ const WorkspaceList = () => {
     )
     
     function filter(lista){
+        let ret = [];
         if(filterTemplates){
-            lista.filter(x=>x.isTemplate)
+            ret = lista.filter(x=>x.isTemplate);
         }else{
-            return lista
+            ret = lista;
         }
+        if(filterByText === ''){
+            return ret;
+        }
+        return ret.filter(x => x.description.includes(filterByText));
     }
 
     return (
         <Box>
             <VStack>
                 <Checkbox isChecked={filterTemplates} onChange={()=>setFilterTemplates(!filterTemplates)} >View only templates</Checkbox>
+                <Input value={filterByText} onChange={(ev)=>setFilterByText(ev.target.value)}></Input>
                 <List spacing={3}>
                     {filter(myWorkspaces).map(w => 
                         <ListItem key={w.id}>
