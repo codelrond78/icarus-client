@@ -33,7 +33,8 @@ function getDescriptionFromYaml(yaml){
 
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-    const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'});
+    //const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'}); //probar a poner localWorkspaces para saber si funciona
+    const { doc } = useDoc(workspace, {db: 'localWorkspaces'}); //probar a poner localWorkspaces para saber si funciona
     const db = usePouch('remoteWorkspaces');
     const toast = useToast();    
     const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
@@ -44,17 +45,18 @@ const ManageYaml = () => {
         }        
     }, [workspace, doc]); 
     
-    async function handleCreate(){
+    async function handleCreate(isTemplate=true){
         try{
             const description = getDescriptionFromYaml(yamlText);
             const workspace = getNameWorkspace();
-            await db.post({_id: workspace, 
+            const response = await db.post({_id: workspace, 
                             description, 
                             specification: yamlText, 
                             type: 'workspace',
                             pinned: false,
-                            isTemplate: false,
+                            isTemplate,
                             containers: []});
+            console.log(response);
             toast({
                 title: 'Workspace POST.',
                 description: "We've created your account for you.",
@@ -63,6 +65,7 @@ const ManageYaml = () => {
                 isClosable: true,
               })
         }catch(err){
+            console.log(err);
             toast({
                 title: 'Workspace POST.',
                 description: "We've created your account for you.",
@@ -77,7 +80,8 @@ const ManageYaml = () => {
         try{
             const description = getDescriptionFromYaml(yamlText);
             const doc = await db.get(workspace);
-            await db.put({...doc, specification: yamlText, description});
+            const response = await db.put({...doc, specification: yamlText, description});
+            console.log(response);
             toast({
                 title: 'Workspace PUT.',
                 description: "We've created your account for you.",
@@ -86,6 +90,7 @@ const ManageYaml = () => {
                 isClosable: true,
               })
         }catch(err){
+            console.log(err);
             toast({
                 title: 'Workspace PUT.',
                 description: "We've created your account for you.",
@@ -97,12 +102,21 @@ const ManageYaml = () => {
     }
 
     async function handleFork(){
-        /*
-        const description = getDescriptionFromYaml(yamlText);
+        await handleCreate(false);
+        setActiveWorkspace(workspace);
+    }
+
+    async function handleCreateTemplate(){
         const workspace = getNameWorkspace();
-        await db.post({_id: workspace, description, specification: yamlText});
-        */
-        await handleCreate();
+        const response = await db.post({_id: workspace, 
+                        description: "#Template", 
+                        specification: "#Template", 
+                        type: 'workspace',
+                        pinned: false,
+                        isTemplate: true,
+                        containers: []
+                    });
+        console.log(response);
         setActiveWorkspace(workspace);
     }
 
@@ -114,6 +128,7 @@ const ManageYaml = () => {
                     <Button onClick={handleFork} leftIcon={<Icon as={VscRepoForked} />} colorScheme='teal' variant='outline'>
                         Fork
                     </Button>
+                    <Button onClick={handleCreateTemplate} colorScheme='teal' variant='outline'>Create template</Button>
                 </HStack>
                 <CodeEditor
                     value={yamlText}
@@ -129,9 +144,9 @@ const ManageYaml = () => {
                     }}
                     />
                 {workspace ? 
-                    <Button disabled={doc.isTemplate} colorScheme='teal' variant='outline' onClick={handleSave}>Save</Button>
+                    <Button colorScheme='teal' variant='outline' onClick={handleSave}>Save</Button>
                     :
-                    <Button disabled={doc.isTemplate} colorScheme='teal' variant='outline' onClick={handleCreate}>Create</Button>
+                    <Button colorScheme='teal' variant='outline' onClick={handleCreate}>Create</Button>
                 }
             </VStack>
         </VStack>

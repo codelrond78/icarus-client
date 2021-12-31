@@ -12,6 +12,11 @@ import {RecoilRoot, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
 import 'highlight.js/styles/solarized-light.css';
 import Password from './components/Password';
+import pouchdbDebug from "pouchdb-debug";
+
+PouchDB.plugin(pouchdbDebug);
+PouchDB.debug.enable('*');
+
 
 function MyPouchProvider({password, children}){
   console.log('entramos en my pouch provider')
