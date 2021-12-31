@@ -6,7 +6,7 @@ import { activeWorkspaceName} from '../store';
 import generateRandomAnimalName from 'random-animal-name-generator';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { VscRepoForked } from "react-icons/vsc";
-import { Icon } from '@chakra-ui/react'
+import { Icon, useToast } from '@chakra-ui/react'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -33,9 +33,10 @@ function getDescriptionFromYaml(yaml){
 
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-    const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'});
-    const db = usePouch('remoteWorkspaces')
-    
+    //const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'}); //probar a poner localWorkspaces para saber si funciona
+    const { doc } = useDoc(workspace, {db: 'localWorkspaces'}); //probar a poner localWorkspaces para saber si funciona
+    const db = usePouch('remoteWorkspaces');
+    const toast = useToast();    
     const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
 
     useEffect(() => {
@@ -44,25 +45,78 @@ const ManageYaml = () => {
         }        
     }, [workspace, doc]); 
     
-    async function handleCreate(){
-        const description = getDescriptionFromYaml(yamlText);
-        const workspace = getNameWorkspace();
-        await db.post({_id: workspace, description, specification: yamlText, type: 'workspace', containers: []});
+    async function handleCreate(isTemplate=true){
+        try{
+            const description = getDescriptionFromYaml(yamlText);
+            const workspace = getNameWorkspace();
+            const response = await db.post({_id: workspace, 
+                            description, 
+                            specification: yamlText, 
+                            type: 'workspace',
+                            pinned: false,
+                            isTemplate,
+                            containers: []});
+            console.log(response);
+            toast({
+                title: 'Workspace POST.',
+                description: "We've created your account for you.",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+              })
+        }catch(err){
+            console.log(err);
+            toast({
+                title: 'Workspace POST.',
+                description: "We've created your account for you.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              })
+        }        
     }
 
     async function handleSave(){
-        const description = getDescriptionFromYaml(yamlText);
-        const doc = await db.get(workspace);
-        await db.put({...doc, specification: yamlText, description});
+        try{
+            const description = getDescriptionFromYaml(yamlText);
+            const doc = await db.get(workspace);
+            const response = await db.put({...doc, specification: yamlText, description});
+            console.log(response);
+            toast({
+                title: 'Workspace PUT.',
+                description: "We've created your account for you.",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+              })
+        }catch(err){
+            console.log(err);
+            toast({
+                title: 'Workspace PUT.',
+                description: "We've created your account for you.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              })
+        }
     }
 
     async function handleFork(){
-        /*
-        const description = getDescriptionFromYaml(yamlText);
+        await handleCreate(false);
+        setActiveWorkspace(workspace);
+    }
+
+    async function handleCreateTemplate(){
         const workspace = getNameWorkspace();
-        await db.post({_id: workspace, description, specification: yamlText});
-        */
-        await handleCreate();
+        const response = await db.post({_id: workspace, 
+                        description: "#Template", 
+                        specification: "#Template", 
+                        type: 'workspace',
+                        pinned: false,
+                        isTemplate: true,
+                        containers: []
+                    });
+        console.log(response);
         setActiveWorkspace(workspace);
     }
 
@@ -74,6 +128,7 @@ const ManageYaml = () => {
                     <Button onClick={handleFork} leftIcon={<Icon as={VscRepoForked} />} colorScheme='teal' variant='outline'>
                         Fork
                     </Button>
+                    <Button onClick={handleCreateTemplate} colorScheme='teal' variant='outline'>Create template</Button>
                 </HStack>
                 <CodeEditor
                     value={yamlText}

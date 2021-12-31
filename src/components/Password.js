@@ -23,15 +23,13 @@ function Password(){
           left="0"
           transform="translateY(-50%, -50%)"
         >
-          <Center bg='tomato' h='100%' w='100%' color='white'>
+          <Center>
             <VStack>
-              <Box border='2px solid' borderColor='white'>
+              <Box border='2px solid' borderColor='gray'>
                 <Box ml='20px' mr='20px' mt='20px' mb='20px'>
                   <Text align='center'>Icarus</Text>
                   <InputGroup size='md'>
                     <Input  type={show ? 'text' : 'password'} 
-                            bg="white" 
-                            color='tomato' 
                             onChange={(ev) => setText(ev.target.value)} 
                             onKeyPress={e=> {
                                 if (e.key === 'Enter') {
