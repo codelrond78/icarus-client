@@ -11,7 +11,7 @@ const WorkspaceList = () => {
     const [filterTemplates, setFilterTemplates] = useState(false);
     const [filterByText, setFilterByText] = useState("");
     const { rows: workspaces } = useAllDocs({
-        db: "localWorkspaces",
+        db: "remoteWorkspaces",
         include_docs: true, 
         descending: true
       })
