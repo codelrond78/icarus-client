@@ -51,9 +51,8 @@ const ManageYaml = () => {
             const response = await db.post({_id: workspace, 
                             description, 
                             specification: yamlText, 
-                            type: 'workspace',
+                            type: isTemplate ? 'template': 'workspace',
                             pinned: false,
-                            isTemplate,
                             containers: []});
             console.log(response);
             toast({
@@ -111,9 +110,8 @@ const ManageYaml = () => {
         const response = await db.post({_id: workspace, 
                         description: "#Template", 
                         specification: "#Template", 
-                        type: 'workspace',
+                        type: 'template',
                         pinned: false,
-                        isTemplate: true,
                         containers: []
                     });
         console.log(response);

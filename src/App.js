@@ -1,5 +1,5 @@
 import './App.css';
-import { ChakraProvider, Container,  
+import { Box, ChakraProvider, Container,  
          HStack, VStack
 } from "@chakra-ui/react";
 //import Terminal from './components/Terminal';
@@ -44,11 +44,17 @@ function InnerApp(){
       <MyPouchProvider password={password}>
         <Container maxW="80rem">
           <HStack>
-            <WorkspaceList />
-            <VStack style={ {maxWidth: '500px'} }>
-              <ManageYaml workspace={null} />                        
-            </VStack>            
-            <Shell />
+            <Box w="33%">
+              <WorkspaceList />
+            </Box>
+            <Box w="33%">
+              <VStack style={ {maxWidth: '500px'} }>
+                <ManageYaml workspace={null} />                        
+              </VStack>            
+            </Box>
+            <Box w="33%">
+              <Shell />
+            </Box>        
           </HStack>
         </Container>
       </MyPouchProvider>

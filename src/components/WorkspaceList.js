@@ -2,38 +2,46 @@ import React, { useState } from "react";
 import {
   List,
   ListItem,
-  Box, VStack, Checkbox, Input
+  Box, VStack, Input, HStack
 } from "@chakra-ui/react";
 import WorkspaceCard from './WorkspaceCard';
 import { useAllDocs } from 'use-pouchdb';
+import FilterSelect from "./FilterSelect";
 
 const WorkspaceList = () => {
-    const [filterTemplates, setFilterTemplates] = useState(false);
+    const [filterOption, setFilterOption] = useState("ALL");
     const [filterByText, setFilterByText] = useState("");
     const { rows: workspaces } = useAllDocs({
         db: "remoteWorkspaces",
         include_docs: true, 
         descending: true
-      })
+      });
 
-    let myWorkspaces = workspaces.filter(w =>w.doc.type === 'workspace').map(w => (
+    let myWorkspaces = workspaces.filter(w =>w.doc.type === 'workspace' || w.doc.type === 'template').map(w => (
             {
                 id: w.id, 
                 description: w.doc.description, 
                 containers: w.doc.containers, 
-                isTemplate: w.doc.isTemplate,
-                specification: w.doc.specification
+                isTemplate: w.doc.type === 'template',
+                specification: w.doc.specification,
+                icon: w.doc.icon
             }
         )
     )
     
+    console.log('my workspaces', myWorkspaces);
+
     function filter(lista){
+        console.log('entro a filter', filterOption);
         let ret = [];
-        if(filterTemplates){
-            ret = lista.filter(x=>x.isTemplate);
-        }else{
+        if(filterOption === 'ALL'){
             ret = lista;
+        }else if(filterOption === 'TEMPLATE'){
+            ret = lista.filter(x => x.isTemplate);
+        }else{
+            ret = lista.filter(x => x.containers.length !== 0)
         }
+
         if(filterByText === ''){
             return ret;
         }
@@ -43,8 +51,10 @@ const WorkspaceList = () => {
     return (
         <Box>
             <VStack>
-                <Checkbox isChecked={filterTemplates} onChange={()=>setFilterTemplates(!filterTemplates)} >View only templates</Checkbox>
-                <Input value={filterByText} onChange={(ev)=>setFilterByText(ev.target.value)}></Input>
+                <HStack>
+                    <FilterSelect onChange={(ev) => setFilterOption(ev.target.value)} value={filterOption}/>
+                    <Input value={filterByText} onChange={(ev)=>setFilterByText(ev.target.value)}></Input>
+                </HStack>
                 <List spacing={3}>
                     {filter(myWorkspaces).map(w => 
                         <ListItem key={w.id}>
