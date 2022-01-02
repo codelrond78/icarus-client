@@ -1,5 +1,5 @@
 import './App.css';
-import { ChakraProvider, Container,  
+import { Box, ChakraProvider, Container,  
          HStack, VStack
 } from "@chakra-ui/react";
 //import Terminal from './components/Terminal';
@@ -12,43 +12,21 @@ import {RecoilRoot, useRecoilValue} from 'recoil';
 import { passwordAtom } from './store';
 import 'highlight.js/styles/solarized-light.css';
 import Password from './components/Password';
-import pouchdbDebug from "pouchdb-debug";
+//import pouchdbDebug from "pouchdb-debug";
 
-PouchDB.plugin(pouchdbDebug);
-PouchDB.debug.enable('*');
+//PouchDB.plugin(pouchdbDebug);
+//PouchDB.debug.enable('*');
 
 
 function MyPouchProvider({password, children}){
   console.log('entramos en my pouch provider')
-  const localLog = new PouchDB('localLog');
   const remoteLog = new PouchDB(`http://admin:${password}@localhost:5984/icarus_log`);
-
-  localLog.sync(remoteLog, {
-    live: true,
-    retry: true,
-  }).on('change', function (change) {
-    console.log(change)
-  }).on('error', function (err) {
-    console.log('err en log:', err)
-  });
-
-  const localWorkspaces = new PouchDB('localWorkspaces')
   const remoteWorkspaces = new PouchDB(`http://admin:${password}@localhost:5984/workspaces`)
 
-  localWorkspaces.sync(remoteWorkspaces, {
-    live: true,
-    retry: true,
-    filter: 'example/myWorkspaces',
-  }).on('change', function (change) {
-    console.log('!!!!!!!!!!!! change', change)
-  }).on('error', function (err) {
-    console.log('err en log:', err)
-  });
   return (
-      <Provider default="localLog"
+      <Provider default="remoteLog"
             databases={{
-              localLog,
-              localWorkspaces,
+              remoteLog,
               remoteWorkspaces
             }}
       >
@@ -57,19 +35,26 @@ function MyPouchProvider({password, children}){
   )
 }
 
+
 function InnerApp(){
   const password = useRecoilValue(passwordAtom);
   return (
     <div>
       {!password ? <Password /> : (
       <MyPouchProvider password={password}>
-        <Container maxW="80rem" centerContent>
+        <Container maxW="80rem">
           <HStack>
-            <WorkspaceList />
-            <VStack style={ {maxWidth: '500px'} }>
-              <ManageYaml workspace={null} />                        
-            </VStack>            
-            <Shell />
+            <Box w="33%">
+              <WorkspaceList />
+            </Box>
+            <Box w="33%">
+              <VStack style={ {maxWidth: '500px'} }>
+                <ManageYaml workspace={null} />                        
+              </VStack>            
+            </Box>
+            <Box w="33%">
+              <Shell />
+            </Box>        
           </HStack>
         </Container>
       </MyPouchProvider>
@@ -77,18 +62,6 @@ function InnerApp(){
     </div>
   )
 }
-
-/*
-function App() {
-  return (
-  <ChakraProvider>
-        <RecoilRoot>
-          <Shell />
-        </RecoilRoot>
-  </ChakraProvider>
-  )
-}
-*/
 
 function App() {  
   

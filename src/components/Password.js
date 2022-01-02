@@ -23,28 +23,32 @@ function Password(){
           left="0"
           transform="translateY(-50%, -50%)"
         >
-          <Center>
+          <Center h='100vh'>
             <VStack>
-              <Box border='2px solid' borderColor='gray'>
-                <Box ml='20px' mr='20px' mt='20px' mb='20px'>
-                  <Text align='center'>Icarus</Text>
-                  <InputGroup size='md'>
-                    <Input  type={show ? 'text' : 'password'} 
-                            onChange={(ev) => setText(ev.target.value)} 
-                            onKeyPress={e=> {
-                                if (e.key === 'Enter') {
-                                    setPassword(text);
+              <div style={{maxWidth: "250px", background: "linear-gradient(to right, red, purple)", padding: "3px"}}>
+                <div style={{padding: "2rem"}}>
+                  <Box>
+                    <Box color="white" ml='20px' mr='20px' mt='20px' mb='20px'>
+                      <Text align='center'>Icarus</Text>
+                      <InputGroup size='md'>
+                        <Input  type={show ? 'text' : 'password'} 
+                                onChange={(ev) => setText(ev.target.value)} 
+                                onKeyPress={e=> {
+                                    if (e.key === 'Enter') {
+                                        setPassword(text);
+                                    }
                                 }
-                            }
-                    }/>
-                    <InputRightElement width='4.5rem'>
-                      <Button h='1.75rem' size='sm' onClick={handleClick}>
-                        {show ? 'Hide' : 'Show'}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </Box>  
-              </Box>
+                        }/>
+                        <InputRightElement width='4.5rem'>
+                          <Button color="magenta" h='1.75rem' size='sm' onClick={handleClick}>
+                            {show ? 'Hide' : 'Show'}
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </Box>  
+                  </Box>
+                </div>
+              </div>
             </VStack>
           </Center>
         </Box>

@@ -33,8 +33,7 @@ function getDescriptionFromYaml(yaml){
 
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-    //const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'}); //probar a poner localWorkspaces para saber si funciona
-    const { doc } = useDoc(workspace, {db: 'localWorkspaces'}); //probar a poner localWorkspaces para saber si funciona
+    const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'}); 
     const db = usePouch('remoteWorkspaces');
     const toast = useToast();    
     const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
@@ -52,23 +51,23 @@ const ManageYaml = () => {
             const response = await db.post({_id: workspace, 
                             description, 
                             specification: yamlText, 
-                            type: 'workspace',
+                            type: isTemplate ? 'template': 'workspace',
                             pinned: false,
-                            isTemplate,
                             containers: []});
             console.log(response);
             toast({
                 title: 'Workspace POST.',
-                description: "We've created your account for you.",
+                description: `We've created a workspace: ${workspace}`,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
-              })
+              });
+            return workspace;
         }catch(err){
             console.log(err);
             toast({
                 title: 'Workspace POST.',
-                description: "We've created your account for you.",
+                description: `${err}`,
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -84,7 +83,7 @@ const ManageYaml = () => {
             console.log(response);
             toast({
                 title: 'Workspace PUT.',
-                description: "We've created your account for you.",
+                description: "We've update a workspace.",
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -93,7 +92,7 @@ const ManageYaml = () => {
             console.log(err);
             toast({
                 title: 'Workspace PUT.',
-                description: "We've created your account for you.",
+                description: `${err}`,
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -102,7 +101,7 @@ const ManageYaml = () => {
     }
 
     async function handleFork(){
-        await handleCreate(false);
+        const workspace = await handleCreate(false);
         setActiveWorkspace(workspace);
     }
 
@@ -111,9 +110,8 @@ const ManageYaml = () => {
         const response = await db.post({_id: workspace, 
                         description: "#Template", 
                         specification: "#Template", 
-                        type: 'workspace',
+                        type: 'template',
                         pinned: false,
-                        isTemplate: true,
                         containers: []
                     });
         console.log(response);
