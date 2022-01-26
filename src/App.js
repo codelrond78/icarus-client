@@ -20,8 +20,8 @@ import Password from './components/Password';
 
 function MyPouchProvider({password, children}){
   console.log('entramos en my pouch provider')
-  const remoteLog = new PouchDB(`http://admin:${password}@localhost:5984/icarus_log`);
-  const remoteWorkspaces = new PouchDB(`http://admin:${password}@localhost:5984/workspaces`)
+  const remoteLog = new PouchDB(`https://admin:${password}@${process.env.REACT_APP_COUCHDB}/icarus_log`);
+  const remoteWorkspaces = new PouchDB(`https://admin:${password}@${process.env.REACT_APP_COUCHDB}/workspaces`)
 
   return (
       <Provider default="remoteLog"
