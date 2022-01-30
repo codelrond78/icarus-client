@@ -39,7 +39,7 @@ const transitionStyles = {
 function Port({port}){
     const [_, host] = port.split(':');
     return (
-        <Link href={'http://localhost:' + host} isExternal>
+        <Link href={'http://' + host + process.env.REACT_APP_ICARUS + ':7999'} isExternal>
             Open port {port} <ExternalLinkIcon mx='2px' />
         </Link>
     )
@@ -103,7 +103,7 @@ function Card({workspace:  {id, description, containers, specification, isTempla
               </HStack>              
               <Link onClick={()=>setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
               <HStack>
-                {isTemplate ? <ForkButton yamlText={specification} /> : (<>
+                {isTemplate ? <ForkButton specification={specification} /> : (<>
                     <RunButton workspace={id} specification={specification} />
                     <StopButton workspace={id} specification={specification} />
                     <Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={deleteWorkspace}></Button>
