@@ -43,7 +43,7 @@ function InnerApp(){
       {!password ? <Password /> : (
       <MyPouchProvider password={password}>
         <Container maxW="80rem">
-          <HStack>
+          <HStack alignItems={'start'}>
             <Box w="33%">
               <WorkspaceList />
             </Box>

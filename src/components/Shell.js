@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAllDocs } from 'use-pouchdb';
-import Highlight from 'react-highlight';
+//import Highlight from 'react-highlight';
 import { Box } from "@chakra-ui/react";
 
 function terminalLineData(lines){
@@ -14,8 +14,10 @@ const Shell = () => {
         //descending: true
     })
   
-    return (<Box style={ {maxWidth: '500px'} } >
-                <Highlight className='shell'>{terminalLineData(lines)}</Highlight>
+    return (<Box>
+                <div style={{overflow: 'hidden'}}>
+                    <div className='shell' style={ { backgroundColor: '#FFDFD3', overflowY: 'scroll', maxHeight: '800px', maxWidth: '800px'} } >{terminalLineData(lines)}</div>
+                </div>                
             </Box>)
 }
 
