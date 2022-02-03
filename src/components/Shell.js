@@ -1,24 +1,36 @@
-import React from 'react';
-import { useAllDocs } from 'use-pouchdb';
-//import Highlight from 'react-highlight';
+import React, {useState} from 'react';
 import { Box } from "@chakra-ui/react";
+import { useRecoilValue} from 'recoil';
+import { passwordAtom } from '../store';
+import PouchDBChanges from 'react-pouchdb-changes';
 
 function terminalLineData(lines){
-    let mappedLines = lines.map(line => line.doc.type === 'input' ? line.doc.timestamp + ' $' + line.doc.text.trim(): line.doc.text.trim());
+    let mappedLines = lines.map(line => line.type === 'input' ? line.timestamp + ' $' + line.text.trim(): line.text.trim());
     return mappedLines.join("\n");
 }
 
-const Shell = () => {
-    const { rows: lines } = useAllDocs({
-        include_docs: true, 
-        //descending: true
-    })
-  
-    return (<Box>
+const Shell = () => {    
+   const password = useRecoilValue(passwordAtom);
+   const [lines, setLines] = useState([]);
+
+   return (
+        <PouchDBChanges
+            dbUrl={`https://admin:${password}@${process.env.REACT_APP_COUCHDB}/icarus_log`}
+            changesOpts={{
+                since: 'now',
+                live: true,
+                include_docs: true
+            }}
+            onChange={change => setLines([...lines, change.doc])}
+            onError={err => console.log(err)}
+        >
+            <Box>
                 <div style={{overflow: 'hidden'}}>
                     <div className='shell' style={ { backgroundColor: '#FFDFD3', overflowY: 'scroll', maxHeight: '800px', maxWidth: '800px'} } >{terminalLineData(lines)}</div>
                 </div>                
-            </Box>)
+            </Box>
+        </PouchDBChanges>   
+    )
 }
 
 export default Shell;
