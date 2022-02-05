@@ -21,6 +21,7 @@ import { useRecoilState } from "recoil";
 import { activeWorkspaceName } from '../store';
 import { usePouch, useDoc } from 'use-pouchdb'
 import ForkButton from "./ForkButton";
+import axios from 'axios';
 
 const duration = 300;
 
@@ -70,17 +71,25 @@ function Card({workspace:  {id, description, containers, specification, isTempla
   const db = usePouch('remoteWorkspaces')
   const {doc} = useDoc(id, {db: 'remoteWorkspaces'})
 
-  async function deleteWorkspace(){
+  async function deleteWorkspace(workspace, specification){
     try{
       const response = await db.put({...doc, _deleted: true});
       console.log(response);
       if(id === doc._id){
         setActiveWorkspace(null);
       }
+      const url = `/api/workspace/${workspace}/delete`;
+      console.log(url);
+      response = await axios.put(url, {specification});
+      console.log(response.data);
     }catch(err){
       console.log(err);
     }    
   }
+
+function isRunning(containers){
+  return containers && containers.length !== 0;
+}
 
   return (    
           <Box
@@ -104,9 +113,9 @@ function Card({workspace:  {id, description, containers, specification, isTempla
               <Link onClick={()=>setActiveWorkspace(id)}><ListIcon as={ViewIcon} color='green.500' /><Text>{description}</Text></Link>        
               <HStack>
                 {isTemplate ? <ForkButton specification={specification} /> : (<>
-                    <RunButton workspace={id} specification={specification} />
-                    <StopButton workspace={id} specification={specification} />
-                    <Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={deleteWorkspace}></Button>
+                    {!isRunning(containers) ? <RunButton workspace={id} specification={specification} />: null}
+                    {isRunning(containers) ? <StopButton workspace={id} specification={specification} />: null}
+                    <Button  leftIcon={<Icon as={IoTrashOutline} />} colorScheme='pink' onClick={()=>deleteWorkspace(id, specification)}></Button>
                   </>
                 )}
               </HStack>
