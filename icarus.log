@@ -1,3 +1,23 @@
+
+> leveldown@1.9.0 install /app/node_modules/react-pouchdb-changes/node_modules/leveldown
+> prebuild-install || node-gyp rebuild
+
+prebuild-install WARN install No prebuilt binaries found (target=14.18.3 runtime=node arch=x64 platform=linux)
+gyp ERR! build error 
+gyp ERR! stack Error: not found: make
+gyp ERR! stack     at getNotFoundError (/usr/lib/node_modules/npm/node_modules/which/which.js:13:12)
+gyp ERR! stack     at F (/usr/lib/node_modules/npm/node_modules/which/which.js:68:19)
+gyp ERR! stack     at E (/usr/lib/node_modules/npm/node_modules/which/which.js:80:29)
+gyp ERR! stack     at /usr/lib/node_modules/npm/node_modules/which/which.js:89:16
+gyp ERR! stack     at /usr/lib/node_modules/npm/node_modules/isexe/index.js:42:5
+gyp ERR! stack     at /usr/lib/node_modules/npm/node_modules/isexe/mode.js:8:5
+gyp ERR! stack     at FSReqCallback.oncomplete (fs.js:191:21)
+gyp ERR! System Linux 5.4.0-66-generic
+gyp ERR! command "/usr/bin/node" "/usr/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js" "rebuild"
+gyp ERR! cwd /app/node_modules/react-pouchdb-changes/node_modules/leveldown
+gyp ERR! node -v v14.18.3
+gyp ERR! node-gyp -v v5.1.0
+gyp ERR! not ok 
 npm WARN @apideck/better-ajv-errors@0.3.1 requires a peer of ajv@>=8 but none is installed. You must install peer dependencies yourself.
 npm WARN fork-ts-checker-webpack-plugin@6.5.0 requires a peer of typescript@>= 2.7 but none is installed. You must install peer dependencies yourself.
 npm WARN react-terminal-ui@0.1.14 requires a peer of react@^16.13.1 but none is installed. You must install peer dependencies yourself.
@@ -5,11 +25,14 @@ npm WARN react-terminal-ui@0.1.14 requires a peer of react-dom@^16.13.1 but none
 npm WARN tsutils@3.21.0 requires a peer of typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta but none is installed. You must install peer dependencies yourself.
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.3.2 (node_modules/fsevents):
 npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.3.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: leveldown@1.9.0 (node_modules/react-pouchdb-changes/node_modules/leveldown):
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: leveldown@1.9.0 install: `prebuild-install || node-gyp rebuild`
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: Exit status 1
 
-audited 1911 packages in 19.043s
+audited 2108 packages in 27.163s
 
-224 packages are looking for funding
+226 packages are looking for funding
   run `npm fund` for details
 
-found 21 vulnerabilities (4 low, 13 moderate, 4 high)
+found 24 vulnerabilities (4 low, 14 moderate, 5 high, 1 critical)
   run `npm audit fix` to fix them, or `npm audit` for details

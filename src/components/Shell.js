@@ -21,12 +21,15 @@ const Shell = () => {
                 live: true,
                 include_docs: true
             }}
-            onChange={change => setLines([...lines, change.doc])}
+            onChange={change => {
+                setLines(lines => [...lines, change.doc])
+                }
+            }
             onError={err => console.log(err)}
         >
             <Box>
                 <div style={{overflow: 'hidden'}}>
-                    <div className='shell' style={ { backgroundColor: '#FFDFD3', overflowY: 'scroll', maxHeight: '800px', maxWidth: '800px'} } >{terminalLineData(lines)}</div>
+                    <pre className='shell' style={ { whiteSpace: 'pre-wrap', backgroundColor: '#FFDFD3', maxWidth: '800px'} } >{terminalLineData(lines)}</pre>
                 </div>                
             </Box>
         </PouchDBChanges>   
