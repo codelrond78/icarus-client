@@ -29,7 +29,7 @@ npm WARN optional SKIPPING OPTIONAL DEPENDENCY: leveldown@1.9.0 (node_modules/re
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: leveldown@1.9.0 install: `prebuild-install || node-gyp rebuild`
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: Exit status 1
 
-audited 2108 packages in 27.163s
+audited 2108 packages in 21.557s
 
 226 packages are looking for funding
   run `npm fund` for details
