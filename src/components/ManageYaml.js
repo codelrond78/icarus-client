@@ -33,8 +33,8 @@ function getDescriptionFromYaml(yaml){
 
 const ManageYaml = () => {    
     const [workspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-    const { doc } = useDoc(workspace, {db: 'remoteWorkspaces'}); 
-    const db = usePouch('remoteWorkspaces');
+    const { doc } = useDoc(workspace, {db: 'localWorkspaces'}); 
+    const db = usePouch('localWorkspaces');
     const toast = useToast();    
     const [yamlText, setYamlText] = useState('#here comes a description\n"version": "3"');
 

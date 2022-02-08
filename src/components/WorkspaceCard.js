@@ -68,8 +68,8 @@ function Container({container}){
 function Card({workspace:  {id, description, containers, specification, isTemplate, icon}}) {  
   
   const [activeWorkspace, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-  const db = usePouch('remoteWorkspaces')
-  const {doc} = useDoc(id, {db: 'remoteWorkspaces'})
+  const db = usePouch('localWorkspaces')
+  const {doc} = useDoc(id, {db: 'localWorkspaces'})
 
   async function deleteWorkspace(workspace, specification){
     try{

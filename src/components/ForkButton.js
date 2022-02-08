@@ -41,7 +41,7 @@ async function handleCreate({db, specification, isTemplate=true}){
 
 const ForkButton = ({specification}) => {
     const [_, setActiveWorkspace] = useRecoilState(activeWorkspaceName);
-    const db = usePouch('remoteWorkspaces');
+    const db = usePouch('localWorkspaces');
     const toast = useToast();    
 
     async function handleFork(){

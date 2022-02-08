@@ -22,12 +22,27 @@ function MyPouchProvider({password, children}){
   console.log('entramos en my pouch provider')
   //const remoteLog = new PouchDB(`https://admin:${password}@${process.env.REACT_APP_COUCHDB}/icarus_log`);
   const remoteWorkspaces = new PouchDB(`https://admin:${password}@${process.env.REACT_APP_COUCHDB}/workspaces`)
+  const localWorkspaces = new PouchDB('localWorkspaces')
+
+  localWorkspaces.sync(remoteWorkspaces, {
+    live: true,
+    retry: true
+  }).on('change', function (change) {
+    // yo, something changed!
+  }).on('paused', function (info) {
+    // replication was paused, usually because of a lost connection
+  }).on('active', function (info) {
+    // replication was resumed
+  }).on('error', function (err) {
+    // totally unhandled error (shouldn't happen)
+  });
 
   return (
       <Provider default="remoteLog"
             databases={{
               //remoteLog,
-              remoteWorkspaces
+              localWorkspaces,
+              //remoteWorkspaces
             }}
       >
         {children}
