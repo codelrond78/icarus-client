@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useRecoilValue} from 'recoil';
 import { passwordAtom } from '../store';
 import PouchDBChanges from 'react-pouchdb-changes';
@@ -12,6 +12,10 @@ function terminalLineData(lines){
 const Shell = () => {    
    const password = useRecoilValue(passwordAtom);
    const [lines, setLines] = useState([]);
+
+    function clear(){
+        setLines(lines => []);
+    }
 
    return (
         <PouchDBChanges
@@ -28,6 +32,7 @@ const Shell = () => {
             onError={err => console.log(err)}
         >
             <Box>
+                <Button onClick={clear}>Clear</Button>
                 <div style={{overflow: 'hidden'}}>
                     <pre className='shell' style={ { whiteSpace: 'pre-wrap', backgroundColor: '#FFDFD3', maxWidth: '800px'} } >{terminalLineData(lines)}</pre>
                 </div>                
